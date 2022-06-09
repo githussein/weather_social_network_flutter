@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../screens/settings.dart';
 import '../services/ad_helper.dart';
 import 'notifications_screen.dart';
+import 'send_photo_screen.dart';
 
 class ReelsScreen extends StatefulWidget {
   const ReelsScreen({Key? key}) : super(key: key);
@@ -130,6 +131,16 @@ class _ReelsScreenState extends State<ReelsScreen> {
         elevation: 0,
         backgroundColor: const Color(0xff426981),
         actions: [
+          IconButton(
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SendPhotoScreen())),
+              icon: const Icon(
+                Icons.add_box_outlined,
+                size: 30,
+                color: Colors.white,
+              )),
           IconButton(
               onPressed: () => Navigator.push(
                   context,

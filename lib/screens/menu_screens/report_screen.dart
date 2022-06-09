@@ -28,9 +28,9 @@ class _ReportScreenState extends State<ReportScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 1),
+            const SizedBox(height: 0.5),
             Container(
-              height: 60,
+              height: 50,
               width: double.infinity,
               color: const Color(0xff426981),
               child: Row(

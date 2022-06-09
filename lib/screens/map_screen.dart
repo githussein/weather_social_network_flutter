@@ -52,7 +52,7 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'صور الأقمار الاصطناعية',
+          'خرائط الطقس',
           style: TextStyle(
               fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
         ),

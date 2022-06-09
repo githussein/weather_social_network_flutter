@@ -61,7 +61,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           padding: EdgeInsets.only(bottom: 8),
           child: Image(image: AssetImage('assets/img/sat.png')),
         ),
-        label: 'صور الأقمار الاصطناعية',
+        label: 'خرائط الطقس',
       ),
       const BottomNavigationBarItem(
         icon: Padding(
