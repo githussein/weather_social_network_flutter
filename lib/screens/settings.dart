@@ -3,6 +3,7 @@ import '../screens/menu_screens/follow_us_screen.dart';
 import '../screens/menu_screens/report_screen.dart';
 import '../screens/menu_screens/about_screen.dart';
 import '../screens/menu_screens/other_apps_screen.dart';
+import 'register_screen.dart';
 // import 'package:provider/provider.dart';
 
 // import '../screens/contact_us.dart';
@@ -45,20 +46,27 @@ class SettingsScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: const [
-                              Image(
-                                image: AssetImage('assets/img/oman.png'),
-                                height: 60,
-                              ),
-                              SizedBox(width: 10),
-                              Text('أحمد الشبلي',
-                                  overflow: TextOverflow.clip,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22,
-                                      color: Color(0xff814269))),
-                            ],
+                          InkWell(
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RegisterScreen())),
+                            child: Row(
+                              children: const [
+                                Image(
+                                  image: AssetImage('assets/img/profile.png'),
+                                  height: 60,
+                                ),
+                                SizedBox(width: 10),
+                                Text('تسجيل الدخول',
+                                    overflow: TextOverflow.clip,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Color(0xff814269))),
+                              ],
+                            ),
                           ),
                           const Icon(
                             Icons.arrow_forward_ios,
