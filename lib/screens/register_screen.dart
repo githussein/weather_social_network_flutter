@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'sign-in-screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -211,10 +212,16 @@ class _RegisterScreen extends State<RegisterScreen> {
                           TextStyle(fontSize: 16, color: Color(0xff167EE6)))),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'لديك حساب؟ قم بتسجيل الدخول',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Color(0xff814269)),
+            InkWell(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SignInScreen())),
+              child: const Text(
+                'لديك حساب؟ قم بتسجيل الدخول',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Color(0xff814269)),
+              ),
             ),
             const SizedBox(height: 16),
           ],
