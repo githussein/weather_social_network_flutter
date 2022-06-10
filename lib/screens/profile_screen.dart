@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'edit_profile_photo.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -35,22 +36,30 @@ class ProfileScreen extends StatelessWidget {
                       padding: EdgeInsets.all(8),
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        child: ImageIcon(
-                          AssetImage('assets/icon/user.png'),
-                          size: 32,
-                          color: Colors.white,
+                        child: InkWell(
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const EditProfileScreen())),
+                          child: const ImageIcon(
+                            AssetImage('assets/icon/user.png'),
+                            size: 32,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                    Image(image: AssetImage('assets/img/oman.png'), height: 60),
-                    SizedBox(width: 10),
-                    Text('أحمد الشبلي',
+                    const Image(
+                        image: AssetImage('assets/img/oman.png'), height: 60),
+                    const SizedBox(width: 10),
+                    const Text('أحمد الشبلي',
                         overflow: TextOverflow.clip,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
                             color: Colors.white)),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     TextButton.icon(
                       label: const Text('سلطنة عمان',
                           overflow: TextOverflow.clip,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matar_weather/screens/profile_screen.dart';
 import 'sign-in-screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -115,7 +116,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                         borderRadius: BorderRadius.circular(30),
                         // side: BorderSide(color: Colors.red),
                       ))),
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProfileScreen())),
                   child: const Text('تسجيل', style: TextStyle(fontSize: 20))),
             ),
             const SizedBox(height: 10),
@@ -159,7 +163,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                         borderRadius: BorderRadius.circular(10),
                         // side: BorderSide(color: Colors.red),
                       ))),
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProfileScreen())),
                   label: const Text('تسجيل بواسطة الفيسبوك',
                       style: TextStyle(fontSize: 16))),
             ),
@@ -206,7 +213,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                         borderRadius: BorderRadius.circular(10),
                         side: const BorderSide(color: Color(0xff167EE6)),
                       ))),
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProfileScreen())),
                   label: const Text('تسجيل بواسطة قوقل',
                       style:
                           TextStyle(fontSize: 16, color: Color(0xff167EE6)))),
