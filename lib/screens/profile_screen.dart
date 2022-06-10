@@ -66,6 +66,13 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(
+              width: double.infinity,
+              height: 40,
+              child: Center(
+                  child: Text('عدد المشاركات: 3', textAlign: TextAlign.center)),
+            ),
+            Container(height: 0.3, color: Colors.grey),
             Expanded(
               child: ListView(
                 shrinkWrap: true,
