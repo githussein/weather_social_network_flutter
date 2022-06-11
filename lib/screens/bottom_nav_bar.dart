@@ -49,25 +49,43 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    final List<BottomNavigationBarItem> _items = [
-      const BottomNavigationBarItem(
-        icon: Padding(
-          padding: EdgeInsets.only(bottom: 8),
-          child: Image(image: AssetImage('assets/img/weather.png')),
+    final List<BottomNavigationBarItem> items = [
+      BottomNavigationBarItem(
+        icon: Container(
+          height: 40,
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+              color: _selectedIndex == 0
+                  ? const Color(0xff426981)
+                  : Colors.transparent,
+              shape: BoxShape.circle),
+          child: const Image(image: AssetImage('assets/img/weather.png')),
         ),
         label: 'التوقعات ومتابعة الحالات',
       ),
-      const BottomNavigationBarItem(
-        icon: Padding(
-          padding: EdgeInsets.only(bottom: 8),
-          child: Image(image: AssetImage('assets/img/sat.png')),
+      BottomNavigationBarItem(
+        icon: Container(
+          height: 40,
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+              color: _selectedIndex == 1
+                  ? const Color(0xff426981)
+                  : Colors.transparent,
+              shape: BoxShape.circle),
+          child: const Image(image: AssetImage('assets/img/sat.png')),
         ),
         label: 'خرائط الطقس',
       ),
-      const BottomNavigationBarItem(
-        icon: Padding(
-          padding: EdgeInsets.only(bottom: 8),
-          child: Image(image: AssetImage('assets/img/camera.png')),
+      BottomNavigationBarItem(
+        icon: Container(
+          height: 40,
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+              color: _selectedIndex == 2
+                  ? const Color(0xff426981)
+                  : Colors.transparent,
+              shape: BoxShape.circle),
+          child: const Image(image: AssetImage('assets/img/camera.png')),
         ),
         label: 'صور ومقاطع الطقس',
       ),
@@ -93,7 +111,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          items: _items,
+          type: BottomNavigationBarType.fixed,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          selectedItemColor: Colors.black,
+          items: items,
           currentIndex: _selectedIndex,
           onTap: (int index) => _selectTab(pageKeys[index], index),
         ),

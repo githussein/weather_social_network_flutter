@@ -150,7 +150,7 @@ class _RegisterScreen extends State<RegisterScreen> {
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextFormField4(
+                child: TextFormField(
                   controller: _countryController,
                   decoration: const InputDecoration(
                       isDense: true,

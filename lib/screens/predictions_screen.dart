@@ -73,7 +73,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                             ))),
                         onPressed: () {},
                         child: const Text('سلطنة عمان',
-                            style: TextStyle(fontSize: 22))),
+                            style: TextStyle(fontSize: 20))),
                     ElevatedButton(
                         style: ButtonStyle(
                             padding: MaterialStateProperty.all<EdgeInsets>(
@@ -89,13 +89,13 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                             ))),
                         onPressed: () {},
                         child: const Text('اختيار موقع آخر',
-                            style: TextStyle(fontSize: 22))),
+                            style: TextStyle(fontSize: 20))),
                   ],
                 ),
               ],
             ),
             Container(
-              height: 50,
+              height: 45,
               color: const Color(0xff426981),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -142,11 +142,18 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
             ),
             Expanded(
               child: Container(
-                  padding: const EdgeInsets.all(12),
-                  child: const SingleChildScrollView(
-                    child: Text(
-                      'سيكون طقس الاثنين صحوًا بوجه عام على معظم المحافظات مع احتمال تشكل سحب على جبال الحجر خلال المساء، وفرص تشكل المنخفضة أو الضباب في آخر الليل والصباح الباكر على أجزاء من محافظات جنوب شرقية والوسطى. وتهب على سواحل بحر عمان رياح شرقية إلى شمالية شرقية خفيفة إلى عتدلة خلال النهار تتحول إلى شمالية غربية خفيفة ليلا سيكون طقس الاثنين صحوًا بوجه عام على معظم المحافظات مع احتمال تشكل السحب على جبال الحجر خلال المساء، وفرص تشكل المنخفضة أو الضباب في آخر الليل والصباح الباكر على أجزاء من محافظات جنوب الشرقية والوسطى. وتهب على سواحل بحر عمان رياح شرقية إلى شمالية شرقية خفيفة إلى معتدلة خلال النهار تتحول إلى شمالية غربية خفيفة ليلا',
-                      style: TextStyle(fontSize: 22),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: const [
+                        Text('حالة الطقس في عمان',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        Text(
+                            'سيكون طقس الاثنين صحوًا بوجه عام على معظم المحافظات مع احتمال تشكل سحب على جبال الحجر خلال المساء، وفرص تشكل المنخفضة أو الضباب في آخر الليل والصباح الباكر على أجزاء من محافظات جنوب شرقية والوسطى. وتهب على سواحل بحر عمان رياح شرقية إلى شمالية شرقية خفيفة إلى عتدلة خلال النهار تتحول إلى شمالية غربية خفيفة ليلا سيكون طقس الاثنين صحوًا بوجه عام على معظم المحافظات مع احتمال تشكل السحب على جبال الحجر خلال المساء، وفرص تشكل المنخفضة أو الضباب في آخر الليل والصباح الباكر على أجزاء من محافظات جنوب الشرقية والوسطى. وتهب على سواحل بحر عمان رياح شرقية إلى شمالية شرقية خفيفة إلى معتدلة خلال النهار تتحول إلى شمالية غربية خفيفة ليلا',
+                            style: TextStyle(fontSize: 20)),
+                      ],
                     ),
                   )),
             ),
