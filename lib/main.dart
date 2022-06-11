@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:matar_weather/screens/choose_country_screen.dart';
+import 'screens/choose_country_screen.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'screens/bottom_nav_bar.dart';
 
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       ),
       home: const Directionality(
         textDirection: TextDirection.rtl,
-        child: ChooseCountryScreen(),
+        child: BottomNavBar(),
       ),
     );
   }

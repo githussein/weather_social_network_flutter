@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matar_weather/screens/choose_country_screen.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'map_screen.dart';
 import 'reels_screen.dart';
@@ -129,7 +130,9 @@ class TabNavigator extends StatelessWidget {
       child = const ReelsScreen();
     }
 
-    return Navigator(
+    return
+        // ChooseCountryScreen()
+        Navigator(
       key: navigatorKey,
       onGenerateRoute: (routeSettings) {
         return MaterialPageRoute(builder: (context) => child);
