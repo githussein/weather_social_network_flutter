@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'screens/choose_country_screen.dart';
-// import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'screens/bottom_nav_bar.dart';
+import 'providers/weather.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // MobileAds.instance.initialize();
+  MobileAds.instance.initialize();
 
   runApp(const MyApp());
 }
@@ -16,15 +18,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Matar',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const Directionality(
-        textDirection: TextDirection.rtl,
-        child: BottomNavBar(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Auth()),
+      ],
+      child: MaterialApp(
+        title: 'Matar',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.purple,
+        ),
+        home: const Directionality(
+          textDirection: TextDirection.rtl,
+          child: BottomNavBar(),
+        ),
       ),
     );
   }

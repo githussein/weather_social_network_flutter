@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../models/post.dart';
 
 /// The authentication provider
 class Auth with ChangeNotifier {
@@ -9,21 +10,15 @@ class Auth with ChangeNotifier {
   var authHeader = {'authorization': ''};
   String username = '';
 
-  Future<int> getCountryWeather(
-      String name, String email, String password, country) async {
-    var authUrl = Uri.parse('https://admin.rain-app.com/api/auth/signup');
+  Future<int> getAllPosts() async {
+    var url = Uri.parse('https://admin.rain-app.com/api/outlooks');
 
-    //Send data to the server
     try {
-      final response = await http.post(
-        authUrl,
-        body: json.encode({
-          'name': name,
-          'email': email,
-          'password': password,
-          'country': country,
-        }),
-      );
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final List<Post> loadedPostsList = [];
+
+      print(extractedData);
 
       notifyListeners();
     } catch (error) {
@@ -35,7 +30,7 @@ class Auth with ChangeNotifier {
       // saveAuthData(baseUrl, username, password);
 
       final response = await http.get(
-        authUrl,
+        url,
         headers: authHeader,
       );
 
