@@ -78,11 +78,12 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
             children: [
               Stack(
                 children: [
+                  //@TODO zoom picture on click
                   Image(
                       fit: BoxFit.fill,
-                      height: MediaQuery.of(context).size.height * 0.35,
-                      image: const NetworkImage(
-                          'https://cdn.images.express.co.uk/img/dynamic/78/590x/Cyclone-Hikaa-path-1181787.jpg?r=1569271511914')),
+                      height: MediaQuery.of(context).size.height * 0.38,
+                      image: NetworkImage(
+                          'https://admin.rain-app.com/storage/outlooks/${posts[index].files[0]['file']}')),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
