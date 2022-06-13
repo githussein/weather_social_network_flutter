@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../screens/settings.dart';
 import '../services/ad_helper.dart';
 import 'notifications_screen.dart';
@@ -13,12 +13,12 @@ class ReelsScreen extends StatefulWidget {
 }
 
 class _ReelsScreenState extends State<ReelsScreen> {
-  // late BannerAd _bannerAd;
-  // bool _isBannerAdReady = false;
-  //
-  // InterstitialAd? _interstitialAd;
-  // bool _isInterstitialAdReady = false;
-  //
+  late BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
+
+  InterstitialAd? _interstitialAd;
+  bool _isInterstitialAdReady = false;
+
   // void _loadInterstitialAd() {
   //   InterstitialAd.load(
   //     adUnitId: AdHelper.interstitialAdUnitId,

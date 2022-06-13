@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:matar_weather/screens/choose_country_screen.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
+import '../screens/choose_country_screen.dart';
 import 'map_screen.dart';
 import 'reels_screen.dart';
 import 'predictions_screen.dart';
@@ -112,8 +112,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          selectedFontSize: 12,
-          unselectedFontSize: 12,
+          selectedFontSize: 13,
+          unselectedFontSize: 13,
           selectedItemColor: Colors.black,
           items: items,
           currentIndex: _selectedIndex,

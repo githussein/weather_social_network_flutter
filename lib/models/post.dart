@@ -6,7 +6,7 @@ class Post {
   final String details;
   final int likes;
   final int shares;
-  final List<Map<String, dynamic>> files;
+  final List<dynamic> files;
 
   Post({
     required this.id,

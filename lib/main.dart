@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'screens/choose_country_screen.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'screens/bottom_nav_bar.dart';
-import 'providers/weather.dart';
+import 'providers/Auth.dart';
+import 'providers/posts.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => Auth()),
+        ChangeNotifierProvider(create: (context) => Posts()),
       ],
       child: MaterialApp(
         title: 'Matar',
