@@ -19,6 +19,8 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
   Map<String, BannerAd> ads = <String, BannerAd>{};
   var _isInit = true;
   var _isLoading = false;
+  var _isShowComment = false;
+  var _isLiked = false;
   final videoController = VideoPlayerController.network(
       'https://admin.rain-app.com/storage/outlooks/62a6456abd7b7.mp4');
 
@@ -128,22 +130,18 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                     Stack(
                       children: [
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.40,
+                          height: MediaQuery.of(context).size.height * 0.33,
+                          width: double.infinity,
                           color: const Color(0xff707070),
                           child: posts[index]
                                   .files[0]['file']
                                   .toString()
                                   .contains('.mp4')
-                              ? Expanded(
-                                  child: VideoPlayer(videoController),
-                                )
-                              : Expanded(
-                                  //@TODO zoom picture on click
-                                  child: Image(
-                                      fit: BoxFit.fill,
-                                      image: NetworkImage(
-                                          'https://admin.rain-app.com/storage/outlooks/${posts[index].files[0]['file']}')),
-                                ),
+                              ? VideoPlayer(videoController)
+                              : Image(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(
+                                      'https://admin.rain-app.com/storage/outlooks/${posts[index].files[0]['file']}')),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -459,11 +457,17 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 IconButton(
-                                    onPressed: () {},
+                                    onPressed: () =>
+                                        setState(() => _isLiked = !_isLiked),
                                     icon: Image.asset('assets/icon/heart.png',
-                                        color: Colors.white)),
+                                        color: _isLiked
+                                            ? Color(0xffFC0E0E)
+                                            : Colors.white)),
                                 IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() =>
+                                          _isShowComment = !_isShowComment);
+                                    },
                                     icon: Image.asset('assets/icon/comment.png',
                                         color: Colors.white)),
                                 IconButton(
@@ -479,32 +483,287 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                     _isLoading
                         ? const Expanded(
                             child: Center(child: CircularProgressIndicator()))
-                        : Expanded(
-                            child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: SingleChildScrollView(
-                                  // physics: const NeverScrollableScrollPhysics(),
-                                  child: Column(
-                                    children: [
-                                      if (posts[index].title.isNotEmpty)
-                                        Text(posts[index].title,
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold)),
-                                      Text(posts[index].details,
-                                          style: const TextStyle(fontSize: 18)),
-                                      Container(
-                                        height: 100,
-                                        child: AdWidget(
-                                            ad: ads['myBanner$index']!),
+                        : _isShowComment
+                            ? Expanded(
+                                child: Column(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: SizedBox(
+                                        height: 30,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.arrow_back),
+                                          onPressed: () => setState(() =>
+                                              _isShowComment = !_isShowComment),
+                                        ),
                                       ),
-                                      const SizedBox(height: 10),
-                                    ],
-                                  ),
-                                )),
-                          ),
+                                    ),
+                                    const Divider(thickness: 1),
+                                    // Wrap(
+                                    //   children: <Widget>[
+                                    //     Container(
+                                    //       padding:
+                                    //           const EdgeInsets.only(left: 16),
+                                    //       height:
+                                    //           MediaQuery.of(context).size.height *
+                                    //               0.18,
+                                    //       child: Row(
+                                    //         children: <Widget>[
+                                    //           const Expanded(
+                                    //             flex: 2,
+                                    //             child: Align(
+                                    //               alignment: Alignment.topCenter,
+                                    //               child: CircleAvatar(
+                                    //                 backgroundImage: AssetImage(
+                                    //                     'assets/img/profile.png'),
+                                    //                 radius: 24,
+                                    //               ),
+                                    //             ),
+                                    //           ),
+                                    //           Expanded(
+                                    //             flex: 8,
+                                    //             child: Column(
+                                    //               children: <Widget>[
+                                    //                 Expanded(
+                                    //                   flex: 1,
+                                    //                   child: Row(
+                                    //                     children: <Widget>[
+                                    //                       Expanded(
+                                    //                         flex: 6,
+                                    //                         child: Align(
+                                    //                           alignment: Alignment
+                                    //                               .centerRight,
+                                    //                           child: Text(
+                                    //                             'أبو خالد',
+                                    //                             style: TextStyle(
+                                    //                                 color: Color(
+                                    //                                     0xff5A87A3),
+                                    //                                 fontSize: 15),
+                                    //                           ),
+                                    //                         ),
+                                    //                       ),
+                                    //                       Expanded(
+                                    //                         flex: 4,
+                                    //                         child: Align(
+                                    //                           alignment: Alignment
+                                    //                               .centerLeft,
+                                    //                           child: Text(
+                                    //                             'منذ 11 دقيقة',
+                                    //                             style: TextStyle(
+                                    //                                 color: Color(
+                                    //                                     0xff707070),
+                                    //                                 fontSize: 12),
+                                    //                           ),
+                                    //                         ),
+                                    //                       ),
+                                    //                     ],
+                                    //                   ),
+                                    //                 ),
+                                    //                 const Expanded(
+                                    //                   flex: 4,
+                                    //                   child: Text(
+                                    //                     'السلام عليكم ورحمة الله وبركاته ..ما شاء لله كيف توقعات للغد؟؟ هل بتشمل الامطار عمان',
+                                    //                     maxLines: 3,
+                                    //                     style: TextStyle(
+                                    //                         color: Colors.black,
+                                    //                         fontSize: 16),
+                                    //                   ),
+                                    //                 ),
+                                    //                 const Expanded(
+                                    //                   flex: 1,
+                                    //                   child: Align(
+                                    //                     alignment:
+                                    //                         Alignment.centerLeft,
+                                    //                     child: Text(
+                                    //                       'تعليق',
+                                    //                       style: TextStyle(
+                                    //                           color: Color(
+                                    //                               0xff814269),
+                                    //                           fontSize: 15),
+                                    //                     ),
+                                    //                   ),
+                                    //                 ),
+                                    //               ],
+                                    //             ),
+                                    //           ),
+                                    //         ],
+                                    //       ),
+                                    //     )
+                                    //   ],
+                                    // ),
+
+                                    Expanded(
+                                        child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            width: double.infinity,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 8),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Flexible(
+                                                    flex: 2,
+                                                    child: const CircleAvatar(
+                                                      backgroundImage: AssetImage(
+                                                          'assets/img/profile.png'),
+                                                      radius: 24,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Flexible(
+                                                    flex: 8,
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              'أبو خالد',
+                                                              style: TextStyle(
+                                                                  color: Color(
+                                                                      0xff5A87A3),
+                                                                  fontSize: 15),
+                                                            ),
+                                                            Text(
+                                                              'منذ 22 دقيقة',
+                                                              style: TextStyle(
+                                                                  color: Color(
+                                                                      0xff707070),
+                                                                  fontSize: 11),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Text(
+                                                            'السلام عليكم ورحمة الله وبركاته ..ما شاء لله كيف توقعات للغد؟؟ هل بتشمل الامطار عمان'),
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'تعليق',
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xff814269),
+                                                                fontSize: 15),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: double.infinity,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 40),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Flexible(
+                                                    flex: 2,
+                                                    child: const CircleAvatar(
+                                                      backgroundImage: AssetImage(
+                                                          'assets/img/oman.png'),
+                                                      radius: 14,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Flexible(
+                                                    flex: 8,
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              'مدير التوقعات',
+                                                              style: TextStyle(
+                                                                  color: Color(
+                                                                      0xff5A87A3),
+                                                                  fontSize: 14),
+                                                            ),
+                                                            Text(
+                                                              'منذ 11 دقيقة',
+                                                              style: TextStyle(
+                                                                  color: Color(
+                                                                      0xff707070),
+                                                                  fontSize: 11),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Text(
+                                                            'نعم بأذن الله ... هناك توقعات بأمطار غزيرة على عمان خلال اليوم والأيام القادمة مع توقعات بأمطار جدا غزيرة على مسقط وصحار والبريمي مع جريان للأودية بقوة.'),
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            'تعليق',
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xff814269),
+                                                                fontSize: 15),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                                    // Row(
+                                    //   children: [
+                                    //     Expanded(child: TextField()),
+                                    //     IconButton(
+                                    //         onPressed: () {},
+                                    //         icon: Icon(Icons.send))
+                                    //   ],
+                                    // ),
+                                  ],
+                                ),
+                              )
+                            : Expanded(
+                                child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: SingleChildScrollView(
+                                      // physics: const NeverScrollableScrollPhysics(),
+                                      child: Column(
+                                        children: [
+                                          if (posts[index].title.isNotEmpty)
+                                            Text(posts[index].title,
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          Text(posts[index].details,
+                                              style: const TextStyle(
+                                                  fontSize: 18)),
+                                          Container(
+                                            height: 100,
+                                            child: AdWidget(
+                                                ad: ads['myBanner$index']!),
+                                          ),
+                                          const SizedBox(height: 10),
+                                        ],
+                                      ),
+                                    )),
+                              ),
                   ],
                 );
         },
