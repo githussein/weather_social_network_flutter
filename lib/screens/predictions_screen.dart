@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 import '../services/ad_helper.dart';
 import 'notifications_screen.dart';
 import '../screens/settings.dart';
@@ -14,34 +16,21 @@ class PredictionsScreen extends StatefulWidget {
 }
 
 class _PredictionsScreenState extends State<PredictionsScreen> {
+  Map<String, BannerAd> ads = <String, BannerAd>{};
   var _isInit = true;
   var _isLoading = false;
-  late BannerAd _bannerAd;
-  bool _isBannerAdReady = false;
+  final videoController = VideoPlayerController.network(
+      'https://admin.rain-app.com/storage/outlooks/62a6456abd7b7.mp4');
 
   @override
   void initState() {
     super.initState();
 
-    _bannerAd = BannerAd(
-      adUnitId: AdHelper.bannerAdUnitId,
-      request: const AdRequest(),
-      size: AdSize.largeBanner,
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, err) {
-          print('Failed to load a banner ad: ${err.message}');
-          _isBannerAdReady = false;
-          ad.dispose();
-        },
-      ),
-    );
-
-    _bannerAd.load();
+    ///VIDEO PLAYER
+    videoController
+      ..addListener(() => setState(() {}))
+      ..setLooping(true)
+      ..initialize().then((_) => videoController.play());
   }
 
   @override
@@ -59,6 +48,12 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
       });
     }
     _isInit = false;
+  }
+
+  @override
+  void dispose() {
+    videoController.dispose();
+    super.dispose();
   }
 
   @override
@@ -102,15 +97,29 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
         // physics: const BouncingScrollPhysics(),
         itemCount: posts.length,
         itemBuilder: (context, index) {
-          return index == 1
+          ads['myBanner$index'] = BannerAd(
+            adUnitId: AdHelper.bannerAdUnitId,
+            request: const AdRequest(),
+            size: AdSize.largeBanner,
+            listener: BannerAdListener(onAdLoaded: (_) {
+              setState(() {});
+            }, onAdFailedToLoad: (ad, err) {
+              print('Failed to load a banner ad: ${err.message}');
+              ad.dispose();
+            }, onAdWillDismissScreen: (ad) {
+              ad.dispose();
+            }, onAdClosed: (ad) {
+              debugPrint("Ad Got Closed");
+            }),
+          );
+          ads['myBanner$index']!.load();
+
+          return (index == 1 || (index > 2 && (index - 1) % 4 == 0))
               ? Column(
                   children: [
                     const Text('x إيقاف الإعلانات'),
                     Expanded(
-                      child: Image.asset(
-                        'assets/img/ad.png',
-                        fit: BoxFit.fitWidth,
-                      ),
+                      child: Image.asset('assets/img/ad.png', fit: BoxFit.fill),
                     ),
                   ],
                 )
@@ -118,13 +127,23 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                   children: [
                     Stack(
                       children: [
-                        //@TODO zoom picture on click
-                        FittedBox(
-                          child: Image(
-                              fit: BoxFit.fill,
-                              height: MediaQuery.of(context).size.height * 0.38,
-                              image: NetworkImage(
-                                  'https://admin.rain-app.com/storage/outlooks/${posts[index].files[0]['file']}')),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.40,
+                          color: const Color(0xff707070),
+                          child: posts[index]
+                                  .files[0]['file']
+                                  .toString()
+                                  .contains('.mp4')
+                              ? Expanded(
+                                  child: VideoPlayer(videoController),
+                                )
+                              : Expanded(
+                                  //@TODO zoom picture on click
+                                  child: Image(
+                                      fit: BoxFit.fill,
+                                      image: NetworkImage(
+                                          'https://admin.rain-app.com/storage/outlooks/${posts[index].files[0]['file']}')),
+                                ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -168,7 +187,243 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                       borderRadius: BorderRadius.circular(10),
                                       // side: BorderSide(color: Colors.red),
                                     ))),
-                                onPressed: () {},
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return SingleChildScrollView(
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 32, vertical: 120),
+                                            color: Colors.white,
+                                            padding: const EdgeInsets.all(8),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Column(
+                                                      children: const [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: const [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: const [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: const [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 16),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Column(
+                                                      children: const [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: const [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: const [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: const [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 16),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Column(
+                                                      children: const [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: const [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: const [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: const [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 16),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 16),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Image(
+                                                            image: AssetImage(
+                                                                'assets/img/oman.png'),
+                                                            height: 50),
+                                                        Text('عمان'),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                },
                                 child: const Text('اختيار موقع آخر',
                                     style: TextStyle(fontSize: 20))),
                           ],
@@ -240,17 +495,11 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                 fontWeight: FontWeight.bold)),
                                       Text(posts[index].details,
                                           style: const TextStyle(fontSize: 18)),
-                                      if (_isBannerAdReady &&
-                                          (index + 1) % 3 == 0)
-                                        Container(
-                                          padding: EdgeInsets.zero,
-                                          alignment: Alignment.topCenter,
-                                          color: Colors.transparent,
-                                          width: double.infinity,
-                                          height:
-                                              _bannerAd.size.height.toDouble(),
-                                          child: AdWidget(ad: _bannerAd),
-                                        ),
+                                      Container(
+                                        height: 100,
+                                        child: AdWidget(
+                                            ad: ads['myBanner$index']!),
+                                      ),
                                       const SizedBox(height: 10),
                                     ],
                                   ),

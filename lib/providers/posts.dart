@@ -22,10 +22,10 @@ class Posts with ChangeNotifier {
         var files = post['files'];
 
         loadedPosts.add(Post(
-          id: post['id'],
-          title: post['title'],
-          date: post['date'],
-          details: post['details'],
+          id: post['id'] ?? 0,
+          title: post['title'] ?? '',
+          date: post['date'] ?? '',
+          details: post['details'] ?? '',
           files: files,
         ));
       }
