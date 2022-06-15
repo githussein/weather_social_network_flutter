@@ -397,49 +397,24 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                       ),
                                                     ],
                                                   ),
-                                                  const SizedBox(height: 16),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Column(
-                                                        children: [
-                                                          Image(
-                                                              image: AssetImage(
-                                                                  'assets/img/oman.png'),
-                                                              height: 50),
-                                                          Text('عمان'),
-                                                        ],
-                                                      ),
-                                                      Column(
-                                                        children: [
-                                                          Image(
-                                                              image: AssetImage(
-                                                                  'assets/img/oman.png'),
-                                                              height: 50),
-                                                          Text('عمان'),
-                                                        ],
-                                                      ),
-                                                      Column(
-                                                        children: [
-                                                          Image(
-                                                              image: AssetImage(
-                                                                  'assets/img/oman.png'),
-                                                              height: 50),
-                                                          Text('عمان'),
-                                                        ],
-                                                      ),
-                                                      Column(
-                                                        children: [
-                                                          Image(
-                                                              image: AssetImage(
-                                                                  'assets/img/oman.png'),
-                                                              height: 50),
-                                                          Text('عمان'),
-                                                        ],
-                                                      ),
-                                                    ],
+                                                  const SizedBox(height: 32),
+                                                  SizedBox(
+                                                    width: 150,
+                                                    child: ElevatedButton(
+                                                        style: ButtonStyle(
+                                                            padding: MaterialStateProperty.all<EdgeInsets>(
+                                                                const EdgeInsets.symmetric(horizontal: 26)),
+                                                            foregroundColor:
+                                                            MaterialStateProperty.all<Color>(Colors.white),
+                                                            backgroundColor: MaterialStateProperty.all<Color>(
+                                                                const Color(0xff814269)),
+                                                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(30),
+                                                                  // side: BorderSide(color: Colors.red),
+                                                                ))),
+                                                        onPressed: () => Navigator.of(context).pop(),
+                                                        child: const Text('ابدأ', style: TextStyle(fontSize: 22))),
                                                   ),
                                                 ],
                                               ),
