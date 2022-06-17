@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:video_player/video_player.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import '../services/ad_helper.dart';
 import 'notifications_screen.dart';
@@ -161,10 +162,10 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                             .toString()
                                             .contains('.mp4')
                                         ? VideoPlayer(videoController)
-                                        : Image(
-                                            fit: BoxFit.fill,
-                                            image: NetworkImage(
-                                                'https://admin.rain-app.com/storage/outlooks/${file['file']}')),
+                                        : CachedNetworkImage(
+                                            fit: BoxFit.cover,
+                                            imageUrl:
+                                                'https://admin.rain-app.com/storage/outlooks/${file['file']}'),
                                   );
                                 },
                               );
