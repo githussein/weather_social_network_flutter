@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+class ForgotPassScreen extends StatefulWidget {
+  const ForgotPassScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignInScreen> createState() => _SignInScreen();
+  State<ForgotPassScreen> createState() => _ForgotPassScreen();
 }
 
-class _SignInScreen extends State<SignInScreen> {
+class _ForgotPassScreen extends State<ForgotPassScreen> {
+  String _email = '';
+  final _emailController = TextEditingController(text: '');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'تسجيل الدخول',
+          'نسيت كلمة المرور',
           style: TextStyle(
               fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -30,7 +33,7 @@ class _SignInScreen extends State<SignInScreen> {
           children: [
             const SizedBox(height: 10),
             const Text(
-              'لديك حساب؟ قم بتسجيل الدخول',
+              'أدخل البريد الإلكتروني الذي استخدمته لإنشاء حسابك.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 17),
             ),
@@ -44,9 +47,12 @@ class _SignInScreen extends State<SignInScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                textDirection: TextDirection.ltr,
                 decoration: InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.symmetric(horizontal: 16),
@@ -59,7 +65,7 @@ class _SignInScreen extends State<SignInScreen> {
             ),
             const SizedBox(height: 16),
             SizedBox(
-              width: 280,
+              width: 250,
               child: ElevatedButton(
                   style: ButtonStyle(
                       padding: MaterialStateProperty.all<EdgeInsets>(
@@ -73,7 +79,9 @@ class _SignInScreen extends State<SignInScreen> {
                         borderRadius: BorderRadius.circular(30),
                         // side: BorderSide(color: Colors.red),
                       ))),
-                  onPressed: () {},
+                  onPressed: () {
+                    //TODO implement sign-in
+                  },
                   child: const Text('إرسال', style: TextStyle(fontSize: 20))),
             ),
             const SizedBox(height: 16),

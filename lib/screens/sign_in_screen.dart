@@ -1,29 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:matar_weather/screens/sign_in_screen.dart';
+import 'package:matar_weather/screens/predictions_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/Auth.dart';
 import 'profile_screen.dart';
 import 'forgot_pass_screen.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({Key? key}) : super(key: key);
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreen();
+  State<SignInScreen> createState() => _SignInScreen();
 }
 
-class _RegisterScreen extends State<RegisterScreen> {
+class _SignInScreen extends State<SignInScreen> {
   final formKey = GlobalKey<FormState>();
-  String _name = '';
   String _email = '';
   String _password = '';
-  String _country = '';
-  final _nameController = TextEditingController(text: '');
   final _emailController = TextEditingController(text: '');
-  final _passwordController1 = TextEditingController(text: '');
-  final _passwordController2 = TextEditingController(text: '');
-  final _countryController = TextEditingController(text: '');
-
+  final _passwordController = TextEditingController(text: '');
   bool _isLoading = false;
 
   @override
@@ -31,7 +25,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'تسجيل',
+          'تسجيل الدخول',
           style: TextStyle(
               fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -48,31 +42,7 @@ class _RegisterScreen extends State<RegisterScreen> {
           key: formKey,
           child: Column(
             children: [
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                      isDense: true,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                      hintStyle: TextStyle(fontSize: 18),
-                      hintText: 'الاسم',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(1)),
-                      )),
-                  validator: (value) {
-                    if (value != null) {
-                      if (value.isEmpty || value.length < 2) {
-                        return 'برجاء إدخال الاسم';
-                      }
-                      return null;
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TextFormField(
@@ -100,13 +70,13 @@ class _RegisterScreen extends State<RegisterScreen> {
                   },
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TextFormField(
-                  controller: _passwordController1,
-                  obscureText: true,
+                  controller: _passwordController,
                   textDirection: TextDirection.ltr,
+                  obscureText: true,
                   decoration: const InputDecoration(
                       isDense: true,
                       contentPadding: EdgeInsets.symmetric(horizontal: 16),
@@ -126,57 +96,16 @@ class _RegisterScreen extends State<RegisterScreen> {
                   },
                 ),
               ),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextFormField(
-                  controller: _passwordController2,
-                  obscureText: true,
-                  textDirection: TextDirection.ltr,
-                  decoration: const InputDecoration(
-                      isDense: true,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                      hintStyle: TextStyle(fontSize: 18),
-                      hintText: 'إعادة كلمة المرور',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(1)),
-                      )),
-                  validator: (value) {
-                    if (value != null) {
-                      if (value.isEmpty || value.length < 6) {
-                        return 'كلمة المرور غير صحيحة';
-                      } else if (_passwordController2.text !=
-                          _passwordController1.text) {
-                        return 'كلمة المرور غير متطابقة';
-                      }
-                      return null;
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextFormField(
-                  controller: _countryController,
-                  decoration: const InputDecoration(
-                      isDense: true,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                      hintStyle: TextStyle(fontSize: 18),
-                      hintText: 'الدولة',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(1)),
-                      )),
-                  validator: (value) {
-                    if (value != null) {
-                      if (value.isEmpty || value.length < 3) {
-                        return 'برجاء إدخال الدولة';
-                      }
-                      return null;
-                    }
-                    return null;
-                  },
+              const SizedBox(height: 16),
+              InkWell(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ForgotPassScreen())),
+                child: const Text(
+                  'نسيت كلمة المرور؟',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(color: Color(0xff814269)),
                 ),
               ),
               const SizedBox(height: 10),
@@ -198,39 +127,37 @@ class _RegisterScreen extends State<RegisterScreen> {
                         ))),
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        _name = _nameController.text;
                         _email = _emailController.text;
-                        _password = _passwordController2.text;
-                        _country = _countryController.text;
-                        print('\n\n\nUUUUUUUUUUUUUUUUUUSERNAME: $_name');
+                        _password = _passwordController.text;
+
                         print('\n\n\nEEEEEEEEEEEEEEEEEEEEEMAIL: $_email');
                         print('\n\n\nPAAAAAAAAAAAAAAAAAAASWORD: $_password');
-                        print('\n\n\nCOOOOOOOOOOOOOOOOOOOUNTRY: $_country');
 
                         setState(() => _isLoading = true);
                         try {
-                          final statusCode =
+                          final responseBody =
                               await Provider.of<Auth>(context, listen: false)
-                                  .register(_name, _email, _password, _country);
+                                  .signIn(_email, _password);
+                          print('\n\n\nRESPONSE: ${responseBody}\n\n\n');
 
-                          print('\n\n\nRESPONSE: ${statusCode}\n\n\n');
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: Colors.green.shade500,
-                              content: const Text('تم تسجيل الحساب بنجاح'),
+                              content: const Text('تم تسجيل الدخول بنجاح'),
                             ),
                           );
 
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const SignInScreen()));
+                                  builder: (context) =>
+                                      const PredictionsScreen()));
                         } catch (error) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: Colors.green.shade500,
                               content: const Text(
-                                  'فشل تسجيل الحساب. تحقق من الاتصال بالانترنت.'),
+                                  'فشل تسجيل الدخول. تحقق من الاتصال بالانترنت.'),
                             ),
                           );
                         }
@@ -240,7 +167,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                     },
                     child: _isLoading
                         ? const Center(child: CircularProgressIndicator())
-                        : const Text('تسجيل', style: TextStyle(fontSize: 20))),
+                        : const Text('تسجيل الدخول',
+                            style: TextStyle(fontSize: 20))),
               ),
               const SizedBox(height: 10),
               Row(
@@ -349,9 +277,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SignInScreen())),
+                        builder: (context) => const ForgotPassScreen())),
                 child: const Text(
-                  'لديك حساب؟ قم بتسجيل الدخول',
+                  'لبس لديك حساب؟ قم بإنشاء حساب.',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Color(0xff814269)),
                 ),

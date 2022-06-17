@@ -26,6 +26,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
       'https://admin.rain-app.com/storage/outlooks/62a6456abd7b7.mp4');
 
   int _current = 0;
+  late AdSize _adSize;
 
   @override
   void initState() {
@@ -64,6 +65,9 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
   @override
   Widget build(BuildContext context) {
     var posts = Provider.of<Posts>(context, listen: false).posts;
+    _adSize =
+        AdSize(width: MediaQuery.of(context).size.width.toInt(), height: 60);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -98,14 +102,14 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
         ],
       ),
       body: PageView.builder(
-        scrollDirection: Axis.vertical,
+        scrollDirection: Axis.horizontal,
         // physics: const BouncingScrollPhysics(),
         itemCount: posts.length,
         itemBuilder: (context, index) {
           ads['myBanner$index'] = BannerAd(
             adUnitId: AdHelper.bannerAdUnitId,
             request: const AdRequest(),
-            size: AdSize.largeBanner,
+            size: _adSize,
             listener: BannerAdListener(onAdLoaded: (_) {
               setState(() {});
             }, onAdFailedToLoad: (ad, err) {
@@ -403,18 +407,28 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                     child: ElevatedButton(
                                                         style: ButtonStyle(
                                                             padding: MaterialStateProperty.all<EdgeInsets>(
-                                                                const EdgeInsets.symmetric(horizontal: 26)),
-                                                            foregroundColor:
-                                                            MaterialStateProperty.all<Color>(Colors.white),
-                                                            backgroundColor: MaterialStateProperty.all<Color>(
-                                                                const Color(0xff814269)),
+                                                                const EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        26)),
+                                                            foregroundColor: MaterialStateProperty.all<Color>(
+                                                                Colors.white),
+                                                            backgroundColor:
+                                                                MaterialStateProperty.all<Color>(
+                                                                    const Color(
+                                                                        0xff814269)),
                                                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                                 RoundedRectangleBorder(
-                                                                  borderRadius: BorderRadius.circular(30),
-                                                                  // side: BorderSide(color: Colors.red),
-                                                                ))),
-                                                        onPressed: () => Navigator.of(context).pop(),
-                                                        child: const Text('ابدأ', style: TextStyle(fontSize: 22))),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          30),
+                                                              // side: BorderSide(color: Colors.red),
+                                                            ))),
+                                                        onPressed: () =>
+                                                            Navigator.of(context)
+                                                                .pop(),
+                                                        child: const Text('ابدأ',
+                                                            style: TextStyle(fontSize: 22))),
                                                   ),
                                                 ],
                                               ),
@@ -437,7 +451,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                   return Container(
                                     width: 8,
                                     height: 8,
-                                    margin: EdgeInsets.symmetric(
+                                    margin: const EdgeInsets.symmetric(
                                         vertical: 10, horizontal: 2),
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
@@ -765,32 +779,38 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                 ),
                               )
                             : Expanded(
-                                child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: SingleChildScrollView(
-                                      // physics: const NeverScrollableScrollPhysics(),
-                                      child: Column(
-                                        children: [
-                                          if (posts[index].title.isNotEmpty)
-                                            Text(posts[index].title,
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          Text(posts[index].details,
-                                              style: const TextStyle(
-                                                  fontSize: 18)),
-                                          Container(
-                                            height: 100,
-                                            child: AdWidget(
-                                                ad: ads['myBanner$index']!),
+                                child: Column(
+                                  children: [
+                                    // Container(
+                                    //   height: 50,
+                                    //   width: double.infinity,
+                                    //   color: Colors.transparent,
+                                    //   child:
+                                    //       AdWidget(ad: ads['myBanner$index']!),
+                                    // ),
+                                    Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: SingleChildScrollView(
+                                          // physics: const NeverScrollableScrollPhysics(),
+                                          child: Column(
+                                            children: [
+                                              if (posts[index].title.isNotEmpty)
+                                                Text(posts[index].title,
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                              Text(posts[index].details,
+                                                  style: const TextStyle(
+                                                      fontSize: 18)),
+                                              const SizedBox(height: 8),
+                                            ],
                                           ),
-                                          const SizedBox(height: 10),
-                                        ],
-                                      ),
-                                    )),
+                                        )),
+                                  ],
+                                ),
                               ),
                   ],
                 );
