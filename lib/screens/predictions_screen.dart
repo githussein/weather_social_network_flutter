@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matar_weather/providers/engagement.dart';
 import 'package:provider/provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -503,8 +504,14 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     IconButton(
-                                        onPressed: () => setState(
-                                            () => _isLiked = !_isLiked),
+                                        onPressed: () => setState(() {
+                                              _isLiked = !_isLiked;
+                                              if (!_isLiked) {
+                                                Provider.of<Engagement>(context)
+                                                    .likePost(context,
+                                                        posts[index].id);
+                                              }
+                                            }),
                                         icon: _isLiked
                                             ? const Icon(
                                                 Icons.favorite,
