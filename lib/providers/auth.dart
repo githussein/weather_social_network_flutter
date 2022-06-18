@@ -1,35 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 /// The authentication provider
 class Auth with ChangeNotifier {
   /// The locally stored data
-  var backendUrl = '';
-  var authHeader = {'authorization': ''};
-  String username = '';
+  var userToken = '';
+  var authHeader = {'Authorization': ''};
 
-  Future<int> validateTargetBackend(String targetBackendUrl) async {
-    var targetUrl = Uri.parse('$targetBackendUrl/riot-api/config');
-
-    try {
-      final response = await http.get(targetUrl);
-
-      backendUrl = targetBackendUrl;
-
-      return response.statusCode;
-    } catch (error) {
-      rethrow;
-    }
+  Future<void> saveUserData(String token) async {
+    userToken = token;
+    authHeader = {'Authorization': token};
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
   }
 
-  void saveAuthData(String baseUrl, String username, String password) {
-    String basicAuth =
-        'Basic ' + base64Encode(utf8.encode('$username:$password'));
-
-    this.username = username;
-    authHeader = {'authorization': basicAuth};
-    backendUrl = baseUrl;
+  Future<String> getUserToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token') ?? '';
   }
 
   /// Signs a user in using basic authentication.
@@ -69,9 +58,13 @@ class Auth with ChangeNotifier {
         body: json.encode({'email': email, 'password': password}),
       );
 
+      Map<String, dynamic> user = jsonDecode(response.body);
+      saveUserData(user['token']);
+
       notifyListeners();
       return response.body;
     } catch (error) {
+      print('problem signing in');
       rethrow;
     }
   }

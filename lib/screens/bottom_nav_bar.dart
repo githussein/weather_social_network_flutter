@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/Auth.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../screens/choose_country_screen.dart';
 import 'map_screen.dart';
@@ -47,8 +49,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
     }
   }
 
+  Future<void> printToken() async {
+    print(
+        '\n\n########### TOKEN: ${await Provider.of<Auth>(context).getUserToken('token')}\n\n');
+  }
+
   @override
   Widget build(BuildContext context) {
+    printToken();
     final List<BottomNavigationBarItem> items = [
       BottomNavigationBarItem(
         icon: Container(

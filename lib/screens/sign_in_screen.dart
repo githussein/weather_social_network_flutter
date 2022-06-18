@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:matar_weather/screens/predictions_screen.dart';
+import 'dart:convert';
 import 'package:provider/provider.dart';
 import '../providers/Auth.dart';
 import 'profile_screen.dart';
@@ -135,10 +136,8 @@ class _SignInScreen extends State<SignInScreen> {
 
                         setState(() => _isLoading = true);
                         try {
-                          final responseBody =
-                              await Provider.of<Auth>(context, listen: false)
-                                  .signIn(_email, _password);
-                          print('\n\n\nRESPONSE: ${responseBody}\n\n\n');
+                          await Provider.of<Auth>(context, listen: false)
+                              .signIn(_email, _password);
 
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -155,7 +154,7 @@ class _SignInScreen extends State<SignInScreen> {
                         } catch (error) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              backgroundColor: Colors.green.shade500,
+                              backgroundColor: Colors.deepPurple,
                               content: const Text(
                                   'فشل تسجيل الدخول. تحقق من الاتصال بالانترنت.'),
                             ),

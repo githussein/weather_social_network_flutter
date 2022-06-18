@@ -103,7 +103,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
         ],
       ),
       body: PageView.builder(
-        scrollDirection: Axis.horizontal,
+        scrollDirection: Axis.vertical,
         // physics: const BouncingScrollPhysics(),
         itemCount: posts.length,
         itemBuilder: (context, index) {
@@ -467,61 +467,79 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      height: 45,
-                      color: const Color(0xff426981),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.50,
-                            child: Row(
-                              children: [
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Image.asset('assets/icon/time.png',
-                                        width: 12, color: Colors.white)),
-                                const Text(
-                                  '7:55 - 2022.04.27',
-                                  style: TextStyle(
-                                      color: Color(0xFFFEF9F9), fontSize: 15),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(width: 1, color: const Color(0xFFFEF9F9)),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.49,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                IconButton(
-                                    onPressed: () =>
-                                        setState(() => _isLiked = !_isLiked),
-                                    icon: _isLiked
-                                        ? const Icon(
-                                            Icons.favorite,
-                                            color: Color(0xffFC0E0E),
-                                            size: 32,
-                                          )
-                                        : Image.asset('assets/icon/heart.png',
+                    Column(
+                      children: [
+                        Container(
+                          height: 45,
+                          color: const Color(0xff426981),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.50,
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: Image.asset(
+                                            'assets/icon/time.png',
+                                            width: 12,
                                             color: Colors.white)),
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() =>
-                                          _isShowComment = !_isShowComment);
-                                    },
-                                    icon: Image.asset('assets/icon/comment.png',
-                                        color: Colors.white)),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Image.asset('assets/icon/share2.png',
-                                        color: Colors.white)),
-                              ],
-                            ),
+                                    const Text(
+                                      '7:55 - 2022.04.27',
+                                      style: TextStyle(
+                                          color: Color(0xFFFEF9F9),
+                                          fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                  width: 1, color: const Color(0xFFFEF9F9)),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.49,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    IconButton(
+                                        onPressed: () => setState(
+                                            () => _isLiked = !_isLiked),
+                                        icon: _isLiked
+                                            ? const Icon(
+                                                Icons.favorite,
+                                                color: Color(0xffFC0E0E),
+                                                size: 32,
+                                              )
+                                            : Image.asset(
+                                                'assets/icon/heart.png',
+                                                color: Colors.white)),
+                                    IconButton(
+                                        onPressed: () {
+                                          setState(() =>
+                                              _isShowComment = !_isShowComment);
+                                        },
+                                        icon: Image.asset(
+                                            'assets/icon/comment.png',
+                                            color: Colors.white)),
+                                    IconButton(
+                                        onPressed: () {},
+                                        icon: Image.asset(
+                                            'assets/icon/share2.png',
+                                            color: Colors.white)),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        Container(
+                          height: 60,
+                          width: double.infinity,
+                          color: Colors.transparent,
+                          child: AdWidget(ad: ads['myBanner$index']!),
+                        ),
+                      ],
                     ),
                     _isLoading
                         ? const Expanded(
@@ -780,38 +798,26 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                 ),
                               )
                             : Expanded(
-                                child: Column(
-                                  children: [
-                                    // Container(
-                                    //   height: 50,
-                                    //   width: double.infinity,
-                                    //   color: Colors.transparent,
-                                    //   child:
-                                    //       AdWidget(ad: ads['myBanner$index']!),
-                                    // ),
-                                    Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        child: SingleChildScrollView(
-                                          // physics: const NeverScrollableScrollPhysics(),
-                                          child: Column(
-                                            children: [
-                                              if (posts[index].title.isNotEmpty)
-                                                Text(posts[index].title,
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                              Text(posts[index].details,
-                                                  style: const TextStyle(
-                                                      fontSize: 18)),
-                                              const SizedBox(height: 8),
-                                            ],
-                                          ),
-                                        )),
-                                  ],
-                                ),
+                                child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          if (posts[index].title.isNotEmpty)
+                                            Text(posts[index].title,
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          Text(posts[index].details,
+                                              style: const TextStyle(
+                                                  fontSize: 18)),
+                                          const SizedBox(height: 8),
+                                        ],
+                                      ),
+                                    )),
                               ),
                   ],
                 );
