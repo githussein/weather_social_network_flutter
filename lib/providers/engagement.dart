@@ -13,7 +13,7 @@ class Engagement with ChangeNotifier {
         Uri.parse('https://admin.rain-app.com/api/submit-like'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': Provider.of<Auth>(ctx).userToken,
+          'Authorization': Provider.of<Auth>(ctx, listen: false).userToken,
         },
         body: json.encode({'outlook_id': outlookId}),
       );
@@ -31,7 +31,7 @@ class Engagement with ChangeNotifier {
         Uri.parse('https://admin.rain-app.com/api/send-comment'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': Provider.of<Auth>(ctx).userToken,
+          'Authorization': Provider.of<Auth>(ctx, listen: false).userToken,
         },
         body: json.encode({'outlook_id': outlookId, 'comment': comment}),
       );

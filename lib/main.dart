@@ -5,6 +5,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'screens/bottom_nav_bar.dart';
 import 'providers/Auth.dart';
 import 'providers/posts.dart';
+import 'providers/engagement.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => Auth()),
         ChangeNotifierProvider(create: (context) => Posts()),
+        ChangeNotifierProvider(create: (context) => Engagement()),
       ],
       child: MaterialApp(
         title: 'Matar',

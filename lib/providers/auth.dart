@@ -2,18 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../models/user.dart';
 
 /// The authentication provider
 class Auth with ChangeNotifier {
   /// The locally stored data
+  int userId = -1;
+  var username = '';
   var userToken = '';
   var authHeader = {'Authorization': ''};
+  late User currentUser;
+  // User(id: -1, name: '', email: '', country: '', token: '', date: '');
 
-  Future<void> saveUserData(String token) async {
-    userToken = token;
-    authHeader = {'Authorization': token};
+  Future<void> saveUserData(Map<String, dynamic> user) async {
+    currentUser = User(
+      id: user['id'],
+      name: user['name'],
+      email: user['email'],
+      country: user['country'],
+      token: user['token'],
+      date: user['date'],
+    );
+    // currentUser.id = user['id'] ?? -1;
+    // currentUser.name = user['name'] ?? '';
+    // currentUser.email = user['email'] ?? '';
+    // currentUser.password = user['password'] ?? '';
+    // currentUser.country = user['country'] ?? '';
+    // currentUser.phone = user['phone'] ?? '';
+    // currentUser.facebookToken = user['facebook_token'] ?? '';
+    // currentUser.googleToken = user['google_token'] ?? '';
+
+    print(
+        'UserInfo: \n${currentUser.id}\n${currentUser.name}\n${currentUser.email}\n${currentUser.password}\n${currentUser.country}\n${currentUser.token}\n${currentUser.date}\n${currentUser.phone}\n');
+    userToken = user['token'];
+    username = user['name'];
+    userId = user['id'];
+    authHeader = {'Authorization': user['token']};
+
+    //Save in device storage
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token);
+    await prefs.setInt('id', user['id']);
+    await prefs.setString('name', user['name']);
+    await prefs.setString('email', user['email']);
+    await prefs.setString('country', user['country']);
+    await prefs.setString('token', user['token']);
+    await prefs.setString('date', user['date']);
   }
 
   Future<String> getUserToken(String token) async {
@@ -58,8 +91,7 @@ class Auth with ChangeNotifier {
         body: json.encode({'email': email, 'password': password}),
       );
 
-      Map<String, dynamic> user = jsonDecode(response.body);
-      saveUserData(user['token']);
+      saveUserData(jsonDecode(response.body));
 
       notifyListeners();
       return response.body;

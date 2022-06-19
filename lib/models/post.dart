@@ -7,6 +7,7 @@ class Post {
   final int likes;
   final int shares;
   final List<dynamic> files;
+  final List<dynamic> comments;
 
   Post({
     required this.id,
@@ -17,5 +18,6 @@ class Post {
     this.likes = 0,
     this.shares = 0,
     required this.files,
+    required this.comments,
   });
 }

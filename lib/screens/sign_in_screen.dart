@@ -88,7 +88,7 @@ class _SignInScreen extends State<SignInScreen> {
                       )),
                   validator: (value) {
                     if (value != null) {
-                      if (value.isEmpty || value.length < 6) {
+                      if (value.isEmpty) {
                         return 'كلمة المرور غير صحيحة';
                       }
                       return null;

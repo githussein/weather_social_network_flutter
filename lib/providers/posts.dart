@@ -20,6 +20,7 @@ class Posts with ChangeNotifier {
 
       for (var post in extractedData) {
         var files = post['files'];
+        var comments = post['comments'];
 
         loadedPosts.add(Post(
           id: post['id'] ?? 0,
@@ -27,6 +28,7 @@ class Posts with ChangeNotifier {
           date: post['date'] ?? '',
           details: post['details'] ?? '',
           files: files,
+          comments: comments,
         ));
       }
 
