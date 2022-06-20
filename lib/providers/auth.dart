@@ -129,13 +129,13 @@ class Auth with ChangeNotifier {
 
   Future<void> signOut() async {
     isSignedIn = false;
-    // final prefs = await SharedPreferences.getInstance();
-    // await prefs.remove('id');
-    // await prefs.remove('name');
-    // await prefs.remove('email');
-    // await prefs.remove('phone');
-    // await prefs.remove('country');
-    // await prefs.remove('pic');
-    // await prefs.remove('token');
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('id');
+    await prefs.remove('name');
+    await prefs.remove('email');
+    await prefs.remove('phone');
+    await prefs.remove('country');
+    await prefs.remove('pic');
+    await prefs.remove('token');
   }
 }
