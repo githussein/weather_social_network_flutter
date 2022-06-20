@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FollowUsScreen extends StatelessWidget {
   const FollowUsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _launchInBrowser(Uri url) async {
+      if (!await launchUrl(
+        url,
+        mode: LaunchMode.externalApplication,
+      )) {
+        throw 'Could not launch $url';
+      }
+    }
+
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Drawer(
@@ -30,9 +40,17 @@ class FollowUsScreen extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 Container(height: 1, color: Colors.blueGrey.shade100),
-                const AppDrawerItem('انستقرام', 'assets/icon/globe.png'),
+                InkWell(
+                    onTap: () => _launchInBrowser(
+                        Uri.parse('https://www.instagram.com/db5pp')),
+                    child: const AppDrawerItem(
+                        'انستقرام', 'assets/icon/globe.png')),
                 _buildDivider(),
-                const AppDrawerItem('تويتر', 'assets/icon/globe.png'),
+                InkWell(
+                    onTap: () => _launchInBrowser(Uri.parse(
+                        'https://twitter.com/db5pp?s=11&t=zMmF0Nu8_nWUD_Eohjk_Mw')),
+                    child:
+                        const AppDrawerItem('تويتر', 'assets/icon/globe.png')),
                 Container(height: 1, color: Colors.blueGrey.shade100),
               ],
             ),

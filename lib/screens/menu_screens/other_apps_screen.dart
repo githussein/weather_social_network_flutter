@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OtherAppsScreen extends StatelessWidget {
   const OtherAppsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _launchInBrowser(Uri url) async {
+      if (!await launchUrl(
+        url,
+        mode: LaunchMode.externalApplication,
+      )) {
+        throw 'Could not launch $url';
+      }
+    }
+
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Drawer(
@@ -30,9 +40,17 @@ class OtherAppsScreen extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 Container(height: 1, color: Colors.blueGrey.shade100),
-                const AppDrawerItem('موقع غيم', 'assets/icon/globe.png'),
+                InkWell(
+                    onTap: () => _launchInBrowser(
+                        Uri(scheme: 'https', host: 'www.gheym.com')),
+                    child: const AppDrawerItem(
+                        'موقع غيم', 'assets/icon/globe.png')),
                 _buildDivider(),
-                const AppDrawerItem('تطبيق غيم', 'assets/icon/globe.png'),
+                InkWell(
+                    onTap: () => _launchInBrowser(Uri.parse(
+                        'https://play.google.com/store/apps/details?id=com.izzedineeita.ghym')),
+                    child: const AppDrawerItem(
+                        'تطبيق غيم', 'assets/icon/globe.png')),
                 Container(height: 1, color: Colors.blueGrey.shade100),
               ],
             ),
