@@ -17,11 +17,13 @@ class _RegisterScreen extends State<RegisterScreen> {
   String _name = '';
   String _email = '';
   String _password = '';
+  String _phone = '';
   String _country = '';
   final _nameController = TextEditingController(text: '');
   final _emailController = TextEditingController(text: '');
   final _passwordController1 = TextEditingController(text: '');
   final _passwordController2 = TextEditingController(text: '');
+  final _phoneController = TextEditingController(text: '');
   final _countryController = TextEditingController(text: '');
 
   bool _isLoading = false;
@@ -159,6 +161,22 @@ class _RegisterScreen extends State<RegisterScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TextFormField(
+                  controller: _phoneController,
+                  textDirection: TextDirection.ltr,
+                  decoration: const InputDecoration(
+                      isDense: true,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      hintStyle: TextStyle(fontSize: 18),
+                      hintText: 'رقم الموبايل',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(1)),
+                      )),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: TextFormField(
                   controller: _countryController,
                   decoration: const InputDecoration(
                       isDense: true,
@@ -201,11 +219,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                         _name = _nameController.text;
                         _email = _emailController.text;
                         _password = _passwordController2.text;
+                        _phone = _phoneController.text;
                         _country = _countryController.text;
-                        print('\n\n\nUUUUUUUUUUUUUUUUUUSERNAME: $_name');
-                        print('\n\n\nEEEEEEEEEEEEEEEEEEEEEMAIL: $_email');
-                        print('\n\n\nPAAAAAAAAAAAAAAAAAAASWORD: $_password');
-                        print('\n\n\nCOOOOOOOOOOOOOOOOOOOUNTRY: $_country');
 
                         setState(() => _isLoading = true);
                         try {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:matar_weather/screens/predictions_screen.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
 import '../providers/Auth.dart';
+import 'predictions_screen.dart';
 import 'profile_screen.dart';
 import 'forgot_pass_screen.dart';
 
@@ -131,26 +131,34 @@ class _SignInScreen extends State<SignInScreen> {
                         _email = _emailController.text;
                         _password = _passwordController.text;
 
-                        print('\n\n\nEEEEEEEEEEEEEEEEEEEEEMAIL: $_email');
-                        print('\n\n\nPAAAAAAAAAAAAAAAAAAASWORD: $_password');
-
                         setState(() => _isLoading = true);
                         try {
-                          await Provider.of<Auth>(context, listen: false)
-                              .signIn(_email, _password);
+                          var statusCode =
+                              await Provider.of<Auth>(context, listen: false)
+                                  .signIn(_email, _password);
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: Colors.green.shade500,
-                              content: const Text('تم تسجيل الدخول بنجاح'),
-                            ),
-                          );
+                          if (statusCode == 200) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.green.shade500,
+                                content: const Text('تم تسجيل الدخول بنجاح'),
+                              ),
+                            );
 
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const PredictionsScreen()));
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const PredictionsScreen()));
+                          } else if (statusCode == 404) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.deepPurple,
+                                content: const Text(
+                                    'البريد الإلكرتوني أو رمز الدخول غير صحيح.'),
+                              ),
+                            );
+                          }
                         } catch (error) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -160,7 +168,6 @@ class _SignInScreen extends State<SignInScreen> {
                             ),
                           );
                         }
-
                         setState(() => _isLoading = false);
                       }
                     },

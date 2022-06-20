@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/Auth.dart';
 import '../screens/menu_screens/follow_us_screen.dart';
 import '../screens/menu_screens/report_screen.dart';
 import '../screens/menu_screens/about_screen.dart';
@@ -39,87 +41,89 @@ class SettingsScreen extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 Container(height: 1, color: Colors.blueGrey.shade100),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Provider.of<Auth>(context).isSignedIn
+                    ? Column(
                         children: [
-                          InkWell(
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RegisterScreen())),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 4),
                             child: Row(
-                              children: const [
-                                Image(
-                                  image: AssetImage('assets/img/profile.png'),
-                                  height: 60,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ProfileScreen())),
+                                  child: Row(
+                                    children: [
+                                      const Image(
+                                        image: AssetImage(
+                                            'assets/img/profile.png'),
+                                        height: 60,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(Provider.of<Auth>(context).username,
+                                          overflow: TextOverflow.clip,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Color(0xff814269))),
+                                    ],
+                                  ),
                                 ),
-                                SizedBox(width: 10),
-                                Text('تسجيل الدخول',
-                                    overflow: TextOverflow.clip,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Color(0xff814269))),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Color(0xff707070),
+                                ),
                               ],
                             ),
                           ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xff707070),
-                          ),
+                          // _buildDivider(),
                         ],
-                      ),
-                    ),
-                    // _buildDivider(),
-                  ],
-                ),
-                _buildDivider(),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      )
+                    : Column(
                         children: [
-                          InkWell(
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ProfileScreen())),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 4),
                             child: Row(
-                              children: const [
-                                Image(
-                                  image: AssetImage('assets/img/oman.png'),
-                                  height: 60,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const RegisterScreen())),
+                                  child: Row(
+                                    children: const [
+                                      Image(
+                                        image: AssetImage(
+                                            'assets/img/profile.png'),
+                                        height: 60,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text('تسجيل الدخول',
+                                          overflow: TextOverflow.clip,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Color(0xff814269))),
+                                    ],
+                                  ),
                                 ),
-                                SizedBox(width: 10),
-                                Text('أحمد الشبلي',
-                                    overflow: TextOverflow.clip,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Color(0xff814269))),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Color(0xff707070),
+                                ),
                               ],
                             ),
                           ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xff707070),
-                          ),
+                          // _buildDivider(),
                         ],
                       ),
-                    ),
-                    // _buildDivider(),
-                  ],
-                ),
                 _buildDivider(),
                 const AppDrawerItem('إزالة الإعلانات', 'assets/icon/close.png'),
                 _buildDivider(),

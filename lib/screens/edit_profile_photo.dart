@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'predictions_screen.dart';
+import '../providers/Auth.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -8,6 +11,8 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,11 +36,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           child: Column(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height * 0.20,
+                height: MediaQuery.of(context).size.height * 0.18,
                 color: const Color(0xff814269),
                 child: const Center(
                     child: Image(
-                        image: AssetImage('assets/img/oman.png'), height: 60)),
+                        image: AssetImage('assets/img/profile.png'),
+                        height: 60)),
               ),
               const SizedBox(height: 16),
               Column(
@@ -55,13 +61,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         const Icon(Icons.person, color: Colors.grey),
                         const SizedBox(width: 8),
                         Container(width: 1, color: const Color(0xFF707070)),
-                        const Expanded(
+                        Expanded(
                           child: TextField(
                             // controller: _controller,
                             decoration: InputDecoration(
                               contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 16),
-                              hintText: 'أحمد الشبلي',
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              hintText: Provider.of<Auth>(context).username,
                               border: InputBorder.none,
                             ),
                             // onChanged: searchOrder,
@@ -86,13 +92,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         const Icon(Icons.mail_outline, color: Colors.grey),
                         const SizedBox(width: 8),
                         Container(width: 1, color: const Color(0xFF707070)),
-                        const Expanded(
+                        Expanded(
                           child: TextField(
                             // controller: _controller,
                             decoration: InputDecoration(
                               contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 16),
-                              hintText: 'aaaaaa@gmail.com',
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              hintText: Provider.of<Auth>(context).userEmail,
                               border: InputBorder.none,
                             ),
                             // onChanged: searchOrder,
@@ -117,13 +123,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         const Icon(Icons.location_pin, color: Colors.grey),
                         const SizedBox(width: 8),
                         Container(width: 1, color: const Color(0xFF707070)),
-                        const Expanded(
+                        Expanded(
                           child: TextField(
                             // controller: _controller,
                             decoration: InputDecoration(
                               contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 16),
-                              hintText: 'سلطنة عمان',
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              hintText: Provider.of<Auth>(context).userCountry,
                               border: InputBorder.none,
                             ),
                             // onChanged: searchOrder,
@@ -148,13 +154,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         const Icon(Icons.call, color: Colors.grey),
                         const SizedBox(width: 8),
                         Container(width: 1, color: const Color(0xFF707070)),
-                        const Expanded(
+                        Expanded(
                           child: TextField(
                             // controller: _controller,
                             decoration: InputDecoration(
                               contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 16),
-                              hintText: '99999999999',
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              hintText: Provider.of<Auth>(context).userPhone,
                               border: InputBorder.none,
                             ),
                             // onChanged: searchOrder,
@@ -236,7 +242,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   const SizedBox(height: 16),
                   SizedBox(
-                    width: 200,
+                    width: 180,
                     child: ElevatedButton(
                         style: ButtonStyle(
                             padding: MaterialStateProperty.all<EdgeInsets>(
@@ -250,10 +256,40 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               borderRadius: BorderRadius.circular(30),
                               side: const BorderSide(color: Color(0xff814269)),
                             ))),
-                        onPressed: () {},
-                        child: const Text('تسجيل الخروج',
-                            style: TextStyle(
-                                fontSize: 20, color: Color(0xff814269)))),
+                        onPressed: () async {
+                          setState(() => _isLoading = true);
+                          try {
+                            await Provider.of<Auth>(context, listen: false)
+                                .signOut();
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.green.shade500,
+                                content: const Text('تم تسجيل الخروج بنجاح'),
+                              ),
+                            );
+
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const PredictionsScreen()));
+                          } catch (error) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.deepPurple,
+                                content: const Text(
+                                    'فشل تسجيل الخروج. تحقق من الاتصال بالانترنت.'),
+                              ),
+                            );
+                          }
+                          setState(() => _isLoading = false);
+                        },
+                        child: _isLoading
+                            ? const Center(child: CircularProgressIndicator())
+                            : const Text('تسجيل الخروج',
+                                style: TextStyle(
+                                    fontSize: 18, color: Color(0xff814269)))),
                   ),
                   const SizedBox(height: 16),
                 ],

@@ -50,14 +50,12 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
+      setState(() => _isLoading = true);
       //fetch offers and coupons
-      Provider.of<Posts>(context, listen: false).getAllPosts().then((_) {
-        setState(() {
-          _isLoading = false;
-        });
+      Provider.of<Posts>(context, listen: false).getAllPosts()
+          .then((_) => Provider.of<Auth>(context, listen: false).getUserToken())
+          .then((_) {
+        setState(() => _isLoading = false);
       });
     }
     _isInit = false;
@@ -395,7 +393,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                             .spaceEvenly,
                                                     children: [
                                                       Column(
-                                                        children: [
+                                                        children: const [
                                                           Image(
                                                               image: AssetImage(
                                                                   'assets/img/oman.png'),
@@ -404,7 +402,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                         ],
                                                       ),
                                                       Column(
-                                                        children: [
+                                                        children: const [
                                                           Image(
                                                               image: AssetImage(
                                                                   'assets/img/oman.png'),
@@ -413,7 +411,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                         ],
                                                       ),
                                                       Column(
-                                                        children: [
+                                                        children: const [
                                                           Image(
                                                               image: AssetImage(
                                                                   'assets/img/oman.png'),
@@ -422,7 +420,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                         ],
                                                       ),
                                                       Column(
-                                                        children: [
+                                                        children: const [
                                                           Image(
                                                               image: AssetImage(
                                                                   'assets/img/oman.png'),
@@ -515,11 +513,11 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                             'assets/icon/time.png',
                                             width: 12,
                                             color: Colors.white)),
-                                    const Text(
-                                      '7:55 - 2022.04.27',
-                                      style: TextStyle(
+                                     Text(
+                                      posts[index].date,
+                                      style: const TextStyle(
                                           color: Color(0xFFFEF9F9),
-                                          fontSize: 15),
+                                          fontSize: 13),
                                     ),
                                   ],
                                 ),
@@ -642,7 +640,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                               ),
                                                               Text( //comment time
                                                                 commentDate,
-                                                                style: TextStyle(
+                                                                style: const TextStyle(
                                                                     color: Color(
                                                                         0xff707070),
                                                                     fontSize:
@@ -656,7 +654,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                                 comment,
                                                             ),
                                                           ),
-                                                          Align(
+                                                          const Align(
                                                             alignment: Alignment
                                                                 .centerLeft,
                                                             child: Text('',
@@ -699,7 +697,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .spaceBetween,
-                                                            children: [
+                                                            children: const [
                                                               Text(
                                                                 'مدير التوقعات',
                                                                 style: TextStyle(

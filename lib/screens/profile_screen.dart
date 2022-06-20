@@ -1,8 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/Auth.dart';
 import 'edit_profile_photo.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  var _isInit = true;
+  bool _isLoading = false;
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (_isInit) {
+      setState(() => _isLoading = true);
+      Provider.of<Auth>(context).getUserToken().then((_) {
+        setState(() => _isLoading = false);
+      });
+    }
+    _isInit = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +55,7 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: InkWell(
@@ -53,17 +75,17 @@ class ProfileScreen extends StatelessWidget {
                     const Image(
                         image: AssetImage('assets/img/oman.png'), height: 60),
                     const SizedBox(width: 10),
-                    const Text('أحمد الشبلي',
+                    Text(Provider.of<Auth>(context).username,
                         overflow: TextOverflow.clip,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
                             color: Colors.white)),
                     const SizedBox(width: 10),
                     TextButton.icon(
-                      label: const Text('سلطنة عمان',
+                      label: Text(Provider.of<Auth>(context).userCountry,
                           overflow: TextOverflow.clip,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                               color: Colors.white)),

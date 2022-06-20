@@ -49,14 +49,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
     }
   }
 
-  Future<void> printToken() async {
-    print(
-        '\n\n########### TOKEN: ${await Provider.of<Auth>(context).getUserToken('token')}\n\n');
-  }
+  // Future<void> printToken() async {
+  //   print(
+  //       '\n\n########### TOKEN: ${await Provider.of<Auth>(context).getUserToken()}\n\n');
+  // }
 
   @override
   Widget build(BuildContext context) {
-    printToken();
+    // printToken();
     final List<BottomNavigationBarItem> items = [
       BottomNavigationBarItem(
         icon: Container(
