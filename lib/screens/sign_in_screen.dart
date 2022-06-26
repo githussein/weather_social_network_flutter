@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../providers/Auth.dart';
 import 'predictions_screen.dart';
 import 'profile_screen.dart';
@@ -20,6 +21,8 @@ class _SignInScreen extends State<SignInScreen> {
   final _emailController = TextEditingController(text: '');
   final _passwordController = TextEditingController(text: '');
   bool _isLoading = false;
+  late GoogleSignInAccount _userObject;
+  bool _isGoogleSigningIn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -270,13 +273,34 @@ class _SignInScreen extends State<SignInScreen> {
                           borderRadius: BorderRadius.circular(10),
                           side: const BorderSide(color: Color(0xff167EE6)),
                         ))),
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProfileScreen())),
-                    label: const Text('تسجيل بواسطة قوقل',
-                        style:
-                            TextStyle(fontSize: 16, color: Color(0xff167EE6)))),
+                    onPressed: () async {
+                      setState(() => _isGoogleSigningIn = true);
+                      try {
+                        var statusCode =
+                            await Provider.of<Auth>(context, listen: false)
+                                .signInWithGoogle();
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.green.shade500,
+                            content: const Text('تم تسجيل الدخول بنجاح'),
+                          ),
+                        );
+
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ProfileScreen()));
+                      } catch (error) {
+                        rethrow;
+                      }
+                      setState(() => _isGoogleSigningIn = false);
+                    },
+                    label: _isGoogleSigningIn
+                        ? const Center(child: CircularProgressIndicator())
+                        : const Text('تسجيل بواسطة قوقل',
+                            style: TextStyle(
+                                fontSize: 16, color: Color(0xff167EE6)))),
               ),
               const SizedBox(height: 16),
               InkWell(

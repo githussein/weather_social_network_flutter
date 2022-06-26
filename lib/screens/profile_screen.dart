@@ -73,7 +73,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     const Image(
-                        image: AssetImage('assets/img/oman.png'), height: 60),
+                        image: AssetImage('assets/img/profile.png'),
+                        height: 60),
                     const SizedBox(width: 10),
                     Text(Provider.of<Auth>(context).username,
                         overflow: TextOverflow.clip,

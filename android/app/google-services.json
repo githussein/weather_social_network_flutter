@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "279674748265",
+    "project_id": "matar-9d80b",
+    "storage_bucket": "matar-9d80b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279674748265:android:965407974ec1ccecdc91f8",
+        "android_client_info": {
+          "package_name": "com.ashably.matar_weather"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279674748265-rjo0rmcj971ovmtl0m2pu11aadng8q5g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ashably.matar_weather",
+            "certificate_hash": "e77a6c7e9d496cd79db3ec3b837f256cc3e6e4fd"
+          }
+        },
+        {
+          "client_id": "279674748265-npm107sl6u9r2c6c8l8a0dna95rb5qd4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2EAocAPgV0vXgGAWI6DsyE_VL_QwPmFI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279674748265-npm107sl6u9r2c6c8l8a0dna95rb5qd4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

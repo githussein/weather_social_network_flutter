@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/user.dart';
@@ -15,8 +16,16 @@ class Auth with ChangeNotifier {
   String userCountry = '';
   String userPic = '';
   String userToken = '';
+  String googleToken = '';
+  String facebookToken = '';
   var authHeader = {'Authorization': ''};
   // late User currentUser;
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
 
   Future<void> saveUserData(Map<String, dynamic> user) async {
     // currentUser = User(
@@ -114,8 +123,6 @@ class Auth with ChangeNotifier {
         body: json.encode({'email': email, 'password': password}),
       );
 
-      print('responseBody: ${response.body}');
-      print('statusCode: ${response.statusCode}');
       saveUserData(jsonDecode(response.body));
       isSignedIn = true;
 
@@ -124,6 +131,39 @@ class Auth with ChangeNotifier {
     } catch (error) {
       print('problem signing in');
       rethrow;
+    }
+  }
+
+  Future<int> signInWithGoogle() async {
+    int statusCode = 0;
+    try {
+      _googleSignIn.signIn().then((userData) {
+        username = userData!.displayName!;
+        userEmail = userData.email;
+        googleToken = userData.id;
+      }).then((_) async {
+        final response = await http.post(
+          Uri.parse('https://admin.rain-app.com/api/auth/social/google'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: json.encode({
+            'name': username,
+            'email': userEmail,
+            'google_token': googleToken,
+          }),
+        );
+
+        saveUserData(jsonDecode(response.body));
+        isSignedIn = true;
+
+        statusCode = 200;
+        notifyListeners();
+      });
+      return statusCode;
+    } catch (error) {
+      print('problem signing in with Google.');
+      return 400;
     }
   }
 
