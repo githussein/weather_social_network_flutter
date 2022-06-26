@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../providers/Auth.dart';
 import 'predictions_screen.dart';
-import 'profile_screen.dart';
 import 'forgot_pass_screen.dart';
+import 'register_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -203,59 +202,6 @@ class _SignInScreen extends State<SignInScreen> {
               SizedBox(
                 width: 300,
                 child: TextButton.icon(
-                    icon: const ImageIcon(
-                      AssetImage('assets/icon/facebook.png'),
-                      size: 26,
-                      color: Colors.white,
-                    ),
-                    style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsets>(
-                            const EdgeInsets.symmetric(horizontal: 26)),
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color(0xff1976D2)),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          // side: BorderSide(color: Colors.red),
-                        ))),
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProfileScreen())),
-                    label: const Text('تسجيل بواسطة الفيسبوك',
-                        style: TextStyle(fontSize: 16))),
-              ),
-              // SizedBox(
-              //   width: 300,
-              //   child: TextButton.icon(
-              //       icon: const ImageIcon(
-              //         AssetImage('assets/icon/twitter.png'),
-              //         size: 26,
-              //         color: Colors.white,
-              //       ),
-              //       style: ButtonStyle(
-              //           padding: MaterialStateProperty.all<EdgeInsets>(
-              //               const EdgeInsets.symmetric(horizontal: 26)),
-              //           foregroundColor:
-              //               MaterialStateProperty.all<Color>(Colors.white),
-              //           backgroundColor: MaterialStateProperty.all<Color>(
-              //               const Color(0xff00ACEE)),
-              //           shape:
-              //               MaterialStateProperty.all<RoundedRectangleBorder>(
-              //                   RoundedRectangleBorder(
-              //             borderRadius: BorderRadius.circular(10),
-              //             // side: BorderSide(color: Colors.red),
-              //           ))),
-              //       onPressed: () {},
-              //       label: const Text('تسجيل بواسطة تويتر',
-              //           style: TextStyle(fontSize: 16))),
-              // ),
-              SizedBox(
-                width: 300,
-                child: TextButton.icon(
                     icon: const Image(
                       image: AssetImage('assets/icon/google.png'),
                       height: 26,
@@ -276,9 +222,8 @@ class _SignInScreen extends State<SignInScreen> {
                     onPressed: () async {
                       setState(() => _isGoogleSigningIn = true);
                       try {
-                        var statusCode =
-                            await Provider.of<Auth>(context, listen: false)
-                                .signInWithGoogle();
+                        await Provider.of<Auth>(context, listen: false)
+                            .signInWithGoogle();
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -290,9 +235,16 @@ class _SignInScreen extends State<SignInScreen> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ProfileScreen()));
+                                builder: (context) =>
+                                    const PredictionsScreen()));
                       } catch (error) {
-                        rethrow;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.deepPurple,
+                            content: const Text(
+                                'فشل تسجيل الدخول. تحقق من الاتصال بالانترنت.'),
+                          ),
+                        );
                       }
                       setState(() => _isGoogleSigningIn = false);
                     },
@@ -304,12 +256,12 @@ class _SignInScreen extends State<SignInScreen> {
               ),
               const SizedBox(height: 16),
               InkWell(
-                onTap: () => Navigator.push(
+                onTap: () => Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const ForgotPassScreen())),
+                        builder: (context) => const RegisterScreen())),
                 child: const Text(
-                  'لبس لديك حساب؟ قم بإنشاء حساب.',
+                  'ليس لديك حساب؟ قم بإنشاء حساب.',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Color(0xff814269)),
                 ),

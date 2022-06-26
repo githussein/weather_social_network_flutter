@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matar_weather/screens/predictions_screen.dart';
 import 'package:matar_weather/screens/sign_in_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/Auth.dart';
@@ -27,6 +28,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   final _countryController = TextEditingController(text: '');
 
   bool _isLoading = false;
+  bool _isGoogleSigningIn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -306,31 +308,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                     label: const Text('تسجيل بواسطة الفيسبوك',
                         style: TextStyle(fontSize: 16))),
               ),
-              // SizedBox(
-              //   width: 300,
-              //   child: TextButton.icon(
-              //       icon: const ImageIcon(
-              //         AssetImage('assets/icon/twitter.png'),
-              //         size: 26,
-              //         color: Colors.white,
-              //       ),
-              //       style: ButtonStyle(
-              //           padding: MaterialStateProperty.all<EdgeInsets>(
-              //               const EdgeInsets.symmetric(horizontal: 26)),
-              //           foregroundColor:
-              //               MaterialStateProperty.all<Color>(Colors.white),
-              //           backgroundColor: MaterialStateProperty.all<Color>(
-              //               const Color(0xff00ACEE)),
-              //           shape:
-              //               MaterialStateProperty.all<RoundedRectangleBorder>(
-              //                   RoundedRectangleBorder(
-              //             borderRadius: BorderRadius.circular(10),
-              //             // side: BorderSide(color: Colors.red),
-              //           ))),
-              //       onPressed: () {},
-              //       label: const Text('تسجيل بواسطة تويتر',
-              //           style: TextStyle(fontSize: 16))),
-              // ),
               SizedBox(
                 width: 300,
                 child: TextButton.icon(
@@ -351,17 +328,44 @@ class _RegisterScreen extends State<RegisterScreen> {
                           borderRadius: BorderRadius.circular(10),
                           side: const BorderSide(color: Color(0xff167EE6)),
                         ))),
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProfileScreen())),
-                    label: const Text('تسجيل بواسطة قوقل',
-                        style:
-                            TextStyle(fontSize: 16, color: Color(0xff167EE6)))),
+                    onPressed: () async {
+                      setState(() => _isGoogleSigningIn = true);
+                      try {
+                        await Provider.of<Auth>(context, listen: false)
+                            .signInWithGoogle();
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.green.shade500,
+                            content: const Text('تم تسجيل الدخول بنجاح'),
+                          ),
+                        );
+
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const PredictionsScreen()));
+                      } catch (error) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.deepPurple,
+                            content: const Text(
+                                'فشل تسجيل الدخول. تحقق من الاتصال بالانترنت.'),
+                          ),
+                        );
+                      }
+                      setState(() => _isGoogleSigningIn = false);
+                    },
+                    label: _isGoogleSigningIn
+                        ? const Center(child: CircularProgressIndicator())
+                        : const Text('تسجيل بواسطة قوقل',
+                            style: TextStyle(
+                                fontSize: 16, color: Color(0xff167EE6)))),
               ),
               const SizedBox(height: 16),
               InkWell(
-                onTap: () => Navigator.push(
+                onTap: () => Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const SignInScreen())),
