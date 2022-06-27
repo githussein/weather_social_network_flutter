@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">تطبيق مطر</string>
+    <string name="facebook_app_id">1045226076398047</string>
+    <string name="fb_login_protocol_scheme">fb1045226076398047</string>
+    <string name="facebook_client_token">0c573ab3c1219b0905cbf403bf56b862</string>
+</resources>

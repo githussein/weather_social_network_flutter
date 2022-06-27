@@ -29,6 +29,7 @@ class _RegisterScreen extends State<RegisterScreen> {
 
   bool _isLoading = false;
   bool _isGoogleSigningIn = false;
+  bool _isFacebookSigningIn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -301,10 +302,35 @@ class _RegisterScreen extends State<RegisterScreen> {
                           borderRadius: BorderRadius.circular(10),
                           // side: BorderSide(color: Colors.red),
                         ))),
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProfileScreen())),
+                    onPressed: () async {
+                      setState(() => _isFacebookSigningIn = true);
+                      try {
+                        await Provider.of<Auth>(context, listen: false)
+                            .signInWithFacebook();
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.green.shade500,
+                            content: const Text('تم تسجيل الدخول بنجاح'),
+                          ),
+                        );
+
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const PredictionsScreen()));
+                      } catch (error) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.deepPurple,
+                            content: const Text(
+                                'فشل تسجيل الدخول. تحقق من الاتصال بالانترنت.'),
+                          ),
+                        );
+                      }
+                      setState(() => _isFacebookSigningIn = false);
+                    },
                     label: const Text('تسجيل بواسطة الفيسبوك',
                         style: TextStyle(fontSize: 16))),
               ),
