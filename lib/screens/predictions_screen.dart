@@ -28,7 +28,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
   var _isShowComment = false;
   bool _isBannerAdReady = false;
   var _isLiked = false;
-  final videoController = VideoPlayerController.network(
+  var videoController = VideoPlayerController.network(
       'https://admin.rain-app.com/storage/outlooks/62a6456abd7b7.mp4');
   final _commentController = TextEditingController(text: '');
 
@@ -51,8 +51,8 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
     super.didChangeDependencies();
     if (_isInit) {
       setState(() => _isLoading = true);
-      //fetch offers and coupons
-      Provider.of<Posts>(context, listen: false).getAllPosts()
+      Provider.of<Posts>(context, listen: false)
+          .getAllPosts()
           .then((_) => Provider.of<Auth>(context, listen: false).getUserToken())
           .then((_) {
         setState(() => _isLoading = false);
@@ -132,25 +132,25 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
           );
           ads['myBanner$index']!.load();
 
-
           late var commentObject;
           String comment = '';
           String reply = '';
           String commentDate = '';
 
-          if(Provider.of<Auth>(context, listen: false).userToken.isNotEmpty){
+          if (Provider.of<Auth>(context, listen: false).userToken.isNotEmpty) {
             commentObject = (posts[index].comments.firstWhereOrNull(
-                  (comment) => comment['user_id'] == Provider.of<Auth>(context, listen: false).userId,
-            ));
+                  (comment) =>
+                      comment['user_id'] ==
+                      Provider.of<Auth>(context, listen: false).userId,
+                ));
             if (commentObject != null) {
               comment = commentObject['comment'] ?? '';
               reply = commentObject['reply'] ?? '';
               commentDate = commentObject['date'] ?? '';
             }
-          } else{
+          } else {
             commentObject = null;
           }
-
 
           return (index == 1 || (index > 2 && (index - 1) % 4 == 0))
               ? Column(
@@ -513,7 +513,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                             'assets/icon/time.png',
                                             width: 12,
                                             color: Colors.white)),
-                                     Text(
+                                    Text(
                                       posts[index].date,
                                       style: const TextStyle(
                                           color: Color(0xFFFEF9F9),
@@ -568,13 +568,13 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                             ],
                           ),
                         ),
-                        if(_isBannerAdReady)
-                        Container(
-                          height: 60,
-                          width: double.infinity,
-                          color: Colors.transparent,
-                          child: AdWidget(ad: ads['myBanner$index']!),
-                        ),
+                        if (_isBannerAdReady)
+                          Container(
+                            height: 60,
+                            width: double.infinity,
+                            color: Colors.transparent,
+                            child: AdWidget(ad: ads['myBanner$index']!),
+                          ),
                       ],
                     ),
                     _isLoading
@@ -597,8 +597,9 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                     ),
                                     const Divider(thickness: 1),
                                     if (commentObject != null)
-                                      Expanded(//comment & reply
-                                      child: SingleChildScrollView(
+                                      Expanded(
+                                          //comment & reply
+                                          child: SingleChildScrollView(
                                         child: Column(
                                           children: [
                                             Container(
@@ -628,97 +629,38 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                                 MainAxisAlignment
                                                                     .spaceBetween,
                                                             children: [
-                                                              Text( //username
+                                                              Text(
+                                                                //username
                                                                 Provider.of<Auth>(
                                                                         context)
                                                                     .username,
-                                                                style: const TextStyle(
-                                                                    color: Color(
-                                                                        0xff5A87A3),
-                                                                    fontSize:
-                                                                        15,),
-                                                              ),
-                                                              Text( //comment time
-                                                                commentDate,
-                                                                style: const TextStyle(
-                                                                    color: Color(
-                                                                        0xff707070),
-                                                                    fontSize:
-                                                                        11,),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Align(
-                                                            alignment: Alignment.centerRight,
-                                                            child: Text( //user comment
-                                                                comment,
-                                                            ),
-                                                          ),
-                                                          const Align(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: Text('',
-                                                              style: TextStyle(
+                                                                style:
+                                                                    const TextStyle(
                                                                   color: Color(
-                                                                      0xff814269),
-                                                                  fontSize: 15),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            if (reply.isNotEmpty) Container(
-                                              width: double.infinity,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 40),
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    const Flexible(
-                                                      flex: 2,
-                                                      child: CircleAvatar(
-                                                        backgroundImage: AssetImage(
-                                                            'assets/img/oman.png'),
-                                                        radius: 14,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 8),
-                                                    Flexible(
-                                                      flex: 8,
-                                                      child: Column(
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: const [
-                                                              Text(
-                                                                'مدير التوقعات',
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xff5A87A3),
-                                                                    fontSize:
-                                                                        14),
+                                                                      0xff5A87A3),
+                                                                  fontSize: 15,
+                                                                ),
                                                               ),
                                                               Text(
-                                                                '',
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xff707070),
-                                                                    fontSize:
-                                                                        11),
+                                                                //comment time
+                                                                commentDate,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Color(
+                                                                      0xff707070),
+                                                                  fontSize: 11,
+                                                                ),
                                                               ),
                                                             ],
                                                           ),
                                                           Align(
-                                                              alignment: Alignment.centerRight,
-                                                              child: Text(reply)),
+                                                            alignment: Alignment
+                                                                .centerRight,
+                                                            child: Text(
+                                                              //user comment
+                                                              comment,
+                                                            ),
+                                                          ),
                                                           const Align(
                                                             alignment: Alignment
                                                                 .centerLeft,
@@ -737,6 +679,79 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                 ),
                                               ),
                                             ),
+                                            if (reply.isNotEmpty)
+                                              Container(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 40),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      const Flexible(
+                                                        flex: 2,
+                                                        child: CircleAvatar(
+                                                          backgroundImage:
+                                                              AssetImage(
+                                                                  'assets/img/oman.png'),
+                                                          radius: 14,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 8),
+                                                      Flexible(
+                                                        flex: 8,
+                                                        child: Column(
+                                                          children: [
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: const [
+                                                                Text(
+                                                                  'مدير التوقعات',
+                                                                  style: TextStyle(
+                                                                      color: Color(
+                                                                          0xff5A87A3),
+                                                                      fontSize:
+                                                                          14),
+                                                                ),
+                                                                Text(
+                                                                  '',
+                                                                  style: TextStyle(
+                                                                      color: Color(
+                                                                          0xff707070),
+                                                                      fontSize:
+                                                                          11),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Align(
+                                                                alignment: Alignment
+                                                                    .centerRight,
+                                                                child: Text(
+                                                                    reply)),
+                                                            const Align(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              child: Text(
+                                                                '',
+                                                                style: TextStyle(
+                                                                    color: Color(
+                                                                        0xff814269),
+                                                                    fontSize:
+                                                                        15),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
                                           ],
                                         ),
                                       )),
@@ -749,8 +764,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                           children: [
                                             Expanded(
                                               child: TextField(
-                                                controller:
-                                                    _commentController,
+                                                controller: _commentController,
                                                 decoration: InputDecoration(
                                                   isDense: true,
                                                   contentPadding:
@@ -760,8 +774,8 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                   hintText: 'أرسل تعليق',
                                                   border: OutlineInputBorder(
                                                       borderRadius:
-                                                          BorderRadius
-                                                              .circular(30)),
+                                                          BorderRadius.circular(
+                                                              30)),
                                                 ),
                                               ),
                                             ),
@@ -783,13 +797,17 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                               _commentController
                                                                   .text);
 
-                                                      if (comment.isEmpty){
-                                                        await Provider.of<Posts>(context, listen: false).getAllPosts().then((_) {
+                                                      if (comment.isEmpty) {
+                                                        await Provider.of<
+                                                                    Posts>(
+                                                                context,
+                                                                listen: false)
+                                                            .getAllPosts()
+                                                            .then((_) {
                                                           setState(() =>
-                                                            _commentController.clear()
-                                                          );
+                                                              _commentController
+                                                                  .clear());
                                                         });
-
                                                       }
                                                       ScaffoldMessenger.of(
                                                               context)

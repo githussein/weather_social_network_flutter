@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 /// The authentication provider
 class Auth with ChangeNotifier {
@@ -170,21 +170,21 @@ class Auth with ChangeNotifier {
   Future<int> signInWithFacebook() async {
     int statusCode = 0;
     try {
-      final LoginResult result = await FacebookAuth.instance.login(
-          permissions: [
-            "email",
-            "public_profile",
-            "user_friends"
-          ]); // by default we request the email and the public profile
+      // final LoginResult result = await FacebookAuth.instance.login(
+      //     permissions: [
+      //       "email",
+      //       "public_profile",
+      //       "user_friends"
+      //     ]); // by default we request the email and the public profile
 // or FacebookAuth.i.login()
-      if (result.status == LoginStatus.success) {
-        // you are logged
-        final AccessToken accessToken = result.accessToken!;
-        print('Facebook: $AccessToken');
-      } else {
-        print('Facebook: ${result.status}');
-        print(result.message);
-      }
+//       if (result.status == LoginStatus.success) {
+//         // you are logged
+//         final AccessToken accessToken = result.accessToken!;
+//         print('Facebook: $AccessToken');
+//       } else {
+//         print('Facebook: ${result.status}');
+//         print(result.message);
+//       }
       // FacebookAuth.instance
       //     .login(permissions: ['public_profile', 'email'])
       //     .then((value) => FacebookAuth.instance.getUserData())
