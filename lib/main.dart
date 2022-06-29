@@ -6,6 +6,7 @@ import 'screens/bottom_nav_bar.dart';
 import 'providers/Auth.dart';
 import 'providers/posts.dart';
 import 'providers/engagement.dart';
+import 'providers/data.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => Auth()),
         ChangeNotifierProvider(create: (context) => Posts()),
         ChangeNotifierProvider(create: (context) => Engagement()),
+        ChangeNotifierProvider(create: (context) => Data()),
       ],
       child: MaterialApp(
         title: 'Matar',

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
+import '../providers/data.dart';
 import '../services/ad_helper.dart';
 import 'settings.dart';
 import 'notifications_screen.dart';
@@ -13,8 +15,12 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  String mapUrl =
+      'https://www.meteoblue.com/ar/weather/maps/widget/oman?windAnimation=1#coords=4.33/25.78/53.29&map=windAnimation~rainbow~auto~10%20m%20above%20gnd~none';
   late BannerAd _bannerAd;
   bool _isBannerAdReady = false;
+  var _isInit = true;
+  var _isLoading = false;
 
   @override
   void initState() {
@@ -39,6 +45,20 @@ class _MapScreenState extends State<MapScreen> {
     );
 
     _bannerAd.load();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (_isInit) {
+      setState(() => _isLoading = true);
+      Provider.of<Data>(context, listen: false)
+          .getMapUrl()
+          .then(
+              (_) => mapUrl = Provider.of<Data>(context, listen: false).mapUrl)
+          .then((_) => setState(() => _isLoading = false));
+    }
+    _isInit = false;
   }
 
   @override
@@ -86,13 +106,14 @@ class _MapScreenState extends State<MapScreen> {
       ),
       body: Stack(
         children: [
-          const WebView(
-            debuggingEnabled: true,
-            javascriptMode: JavascriptMode.unrestricted,
-            // initialUrl: 'https://admin.rain-app.com/api/sattelite-link'),
-            initialUrl:
-                'https://www.meteoblue.com/ar/weather/maps/widget/oman?windAnimation=1#coords=4.33/25.78/53.29&map=windAnimation~rainbow~auto~10%20m%20above%20gnd~none',
-          ),
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : WebView(
+                  debuggingEnabled: true,
+                  javascriptMode: JavascriptMode.unrestricted,
+                  // initialUrl: 'https://admin.rain-app.com/api/sattelite-link'),
+                  initialUrl: mapUrl,
+                ),
           if (_isBannerAdReady)
             Container(
               padding: EdgeInsets.zero,
