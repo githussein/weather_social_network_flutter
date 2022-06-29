@@ -1,7 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/data.dart';
+import '../widgets/notifs_listview.dart';
 
-class NotificationsScreen extends StatelessWidget {
+class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
+}
+
+class _NotificationsScreenState extends State<NotificationsScreen> {
+  var _isInit = true;
+  var _isLoading = false;
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (_isInit) {
+      setState(() => _isLoading = true);
+      Provider.of<Data>(context, listen: false)
+          .getNotifications()
+          .then((_) => setState(() => _isLoading = false));
+    }
+    _isInit = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,59 +63,68 @@ class NotificationsScreen extends StatelessWidget {
               ),
             ],
           ),
-          Expanded(
-            child: ListView(
-              children: const <Widget>[
-                ListTile(
-                  title: Text('آخر تحديث للنموذج الأوروبي لتوقعات الامطار',
-                      maxLines: 1),
-                  subtitle: Text('2022.04.24 - 8:00AM'),
-                  trailing: Image(
-                      fit: BoxFit.fill,
-                      height: 42,
-                      image: AssetImage('assets/img/weather.png')),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('آخر تحديث للنموذج الأمريكي لتوقعات الامطار',
-                      maxLines: 1),
-                  subtitle: Text('2022.04.24 - 8:00AM'),
-                  trailing: Image(
-                      fit: BoxFit.fill,
-                      height: 42,
-                      image: AssetImage('assets/img/sat.png')),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('توقعات بالحالة الجوية نهاية مايو', maxLines: 1),
-                  subtitle: Text('2022.04.24 - 8:00AM'),
-                  trailing: Image(
-                      fit: BoxFit.fill,
-                      height: 42,
-                      image: AssetImage('assets/img/camera.png')),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('بداية تأثر السلطنة بالحالة الجوية', maxLines: 1),
-                  subtitle: Text('2022.04.24 - 8:00AM'),
-                  trailing: Image(
-                      fit: BoxFit.fill,
-                      height: 42,
-                      image: AssetImage('assets/img/oman.png')),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text('تم إضافة رد على تعليقك', maxLines: 1),
-                  subtitle: Text('2022.04.24 - 8:00AM'),
-                  trailing: Image(
-                      fit: BoxFit.fill,
-                      height: 42,
-                      image: AssetImage('assets/img/weather.png')),
-                ),
-                Divider(),
-              ],
-            ),
-          ),
+          _isLoading
+              ? const Expanded(
+                  child: Center(child: CircularProgressIndicator()))
+              : Expanded(
+                  child: Column(
+                  children: const [
+                    NotifsListView(),
+                    Divider(),
+                  ],
+                )
+                  // ListView(
+                  //   children: const <Widget>[
+                  //     ListTile(
+                  //       title: Text('آخر تحديث للنموذج الأوروبي لتوقعات الامطار',
+                  //           maxLines: 1),
+                  //       subtitle: Text('2022.04.24 - 8:00AM'),
+                  //       trailing: Image(
+                  //           fit: BoxFit.fill,
+                  //           height: 42,
+                  //           image: AssetImage('assets/img/weather.png')),
+                  //     ),
+                  //     Divider(),
+                  //     ListTile(
+                  //       title: Text('آخر تحديث للنموذج الأمريكي لتوقعات الامطار',
+                  //           maxLines: 1),
+                  //       subtitle: Text('2022.04.24 - 8:00AM'),
+                  //       trailing: Image(
+                  //           fit: BoxFit.fill,
+                  //           height: 42,
+                  //           image: AssetImage('assets/img/sat.png')),
+                  //     ),
+                  //     Divider(),
+                  //     ListTile(
+                  //       title: Text('توقعات بالحالة الجوية نهاية مايو', maxLines: 1),
+                  //       subtitle: Text('2022.04.24 - 8:00AM'),
+                  //       trailing: Image(
+                  //           fit: BoxFit.fill,
+                  //           height: 42,
+                  //           image: AssetImage('assets/img/camera.png')),
+                  //     ),
+                  //     Divider(),
+                  //     ListTile(
+                  //       title: Text('بداية تأثر السلطنة بالحالة الجوية', maxLines: 1),
+                  //       subtitle: Text('2022.04.24 - 8:00AM'),
+                  //       trailing: Image(
+                  //           fit: BoxFit.fill,
+                  //           height: 42,
+                  //           image: AssetImage('assets/img/oman.png')),
+                  //     ),
+                  //     Divider(),
+                  //     ListTile(
+                  //       title: Text('تم إضافة رد على تعليقك', maxLines: 1),
+                  //       subtitle: Text('2022.04.24 - 8:00AM'),
+                  //       trailing: Image(
+                  //           fit: BoxFit.fill,
+                  //           height: 42,
+                  //           image: AssetImage('assets/img/weather.png')),
+                  //     ),
+                  //     Divider(),
+                  //   ],
+                  // ),
+                  ),
         ],
       )),
     );
