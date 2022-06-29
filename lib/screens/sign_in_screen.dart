@@ -22,6 +22,7 @@ class _SignInScreen extends State<SignInScreen> {
   bool _isLoading = false;
   late GoogleSignInAccount _userObject;
   bool _isGoogleSigningIn = false;
+  bool _isFacebookSigningIn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -199,6 +200,59 @@ class _SignInScreen extends State<SignInScreen> {
                 ],
               ),
               const SizedBox(height: 10),
+              SizedBox(
+                width: 300,
+                child: TextButton.icon(
+                    icon: const ImageIcon(
+                      AssetImage('assets/icon/facebook.png'),
+                      size: 26,
+                      color: Colors.white,
+                    ),
+                    style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                            const EdgeInsets.symmetric(horizontal: 26)),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color(0xff1976D2)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          // side: BorderSide(color: Colors.red),
+                        ))),
+                    onPressed: () async {
+                      setState(() => _isFacebookSigningIn = true);
+                      try {
+                        await Provider.of<Auth>(context, listen: false)
+                            .signInWithFacebook();
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.green.shade500,
+                            content: const Text('تم تسجيل الدخول بنجاح'),
+                          ),
+                        );
+
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const PredictionsScreen()));
+                      } catch (error) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.deepPurple,
+                            content: const Text(
+                                'فشل تسجيل الدخول. تحقق من الاتصال بالانترنت.'),
+                          ),
+                        );
+                      }
+                      setState(() => _isFacebookSigningIn = false);
+                    },
+                    label: const Text('تسجيل بواسطة الفيسبوك',
+                        style: TextStyle(fontSize: 16))),
+              ),
               SizedBox(
                 width: 300,
                 child: TextButton.icon(

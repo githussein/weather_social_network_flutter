@@ -42,4 +42,20 @@ class Engagement with ChangeNotifier {
       rethrow;
     }
   }
+
+  Future<void> sendTicket(String email, String content) async {
+    try {
+      final response = await http.post(
+        Uri.parse('https://admin.rain-app.com/api/send-ticket'),
+        body: json.encode({'email': email, 'content': content}),
+      );
+
+      print('statusBody: ${response.statusCode}');
+      notifyListeners();
+      // return response.statusCode;
+    } catch (error) {
+      print('problem sending a ticket.');
+      rethrow;
+    }
+  }
 }
