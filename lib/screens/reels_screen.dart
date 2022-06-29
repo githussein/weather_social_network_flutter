@@ -246,10 +246,9 @@ class _ReelsScreenState extends State<ReelsScreen> {
                           snappedPage: _snappedPageIndex,
                         )
                       : CachedNetworkImage(
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fitWidth,
                           imageUrl:
-                              'https://admin.rain-app.com/storage/weather-shots/${mediaList[index].media}'),
-                );
+                              'https://admin.rain-app.com/storage/weather-shots/${mediaList[index].media}'));
 
           // (index + 1) % 5 == 0
           //   ?
