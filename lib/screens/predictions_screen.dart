@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:matar_weather/screens/sign_in_screen.dart';
 import '../providers/engagement.dart';
 import 'package:provider/provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -31,6 +32,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
   var videoController = VideoPlayerController.network(
       'https://admin.rain-app.com/storage/outlooks/62a6456abd7b7.mp4');
   final _commentController = TextEditingController(text: '');
+  // FocusNode _focus = FocusNode();
 
   int _current = 0;
   late AdSize _adSize;
@@ -763,19 +765,40 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                         child: Row(
                                           children: [
                                             Expanded(
-                                              child: TextField(
-                                                controller: _commentController,
-                                                decoration: InputDecoration(
-                                                  isDense: true,
-                                                  contentPadding:
-                                                      const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 16),
-                                                  hintText: 'أرسل تعليق',
-                                                  border: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30)),
+                                              child: Focus(
+                                                onFocusChange: (hasFocus) {
+                                                  if (hasFocus) {
+                                                    FocusScope.of(context)
+                                                        .requestFocus(
+                                                            FocusNode());
+                                                    if (!Provider.of<Auth>(
+                                                            context,
+                                                            listen: false)
+                                                        .isSignedIn) {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const SignInScreen()));
+                                                    }
+                                                  }
+                                                },
+                                                child: TextField(
+                                                  controller:
+                                                      _commentController,
+                                                  // focusNode: _focus,
+                                                  decoration: InputDecoration(
+                                                    isDense: true,
+                                                    contentPadding:
+                                                        const EdgeInsets
+                                                                .symmetric(
+                                                            horizontal: 16),
+                                                    hintText: 'أرسل تعليق',
+                                                    border: OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30)),
+                                                  ),
                                                 ),
                                               ),
                                             ),

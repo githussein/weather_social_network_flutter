@@ -5,11 +5,8 @@ import '../screens/menu_screens/follow_us_screen.dart';
 import '../screens/menu_screens/report_screen.dart';
 import '../screens/menu_screens/about_screen.dart';
 import '../screens/menu_screens/other_apps_screen.dart';
-import 'register_screen.dart';
 import 'profile_screen.dart';
-// import 'package:provider/provider.dart';
-
-// import '../screens/contact_us.dart';
+import 'sign_in_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -96,7 +93,7 @@ class SettingsScreen extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const RegisterScreen())),
+                                              const SignInScreen())),
                                   child: Row(
                                     children: const [
                                       Image(
