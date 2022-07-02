@@ -238,17 +238,90 @@ class _ReelsScreenState extends State<ReelsScreen> {
                 )
               : Container(
                   color: Colors.black,
-                  child: mediaList[index].media.contains('.mp4')
-                      ? VideoTile(
-                          videoUrl:
-                              'https://admin.rain-app.com/storage/weather-shots/${mediaList[index].media}',
-                          currentIndex: index,
-                          snappedPage: _snappedPageIndex,
-                        )
-                      : CachedNetworkImage(
-                          fit: BoxFit.fitWidth,
-                          imageUrl:
-                              'https://admin.rain-app.com/storage/weather-shots/${mediaList[index].media}'));
+                  child: Stack(
+                    children: [
+                      mediaList[index].media.contains('.mp4')
+                          ? Center(
+                              child: VideoTile(
+                                videoUrl:
+                                    'https://admin.rain-app.com/storage/weather-shots/${mediaList[index].media}',
+                                currentIndex: index,
+                                snappedPage: _snappedPageIndex,
+                              ),
+                            )
+                          : Center(
+                              child: CachedNetworkImage(
+                                  fit: BoxFit.fitWidth,
+                                  imageUrl:
+                                      'https://admin.rain-app.com/storage/weather-shots/${mediaList[index].media}'),
+                            ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Container(
+                          padding: const EdgeInsets.only(bottom: 16, right: 8),
+                          child: IconButton(
+                            icon: Icon(Icons.info_outline,
+                                color: Colors.white38, size: 36),
+                            onPressed: () {
+                              showBottomSheet(
+                                  context: context,
+                                  builder: (context) => ListView(
+                                        shrinkWrap: true,
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: GestureDetector(
+                                              onTap: () =>
+                                                  Navigator.pop(context),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Image.asset(
+                                                    'assets/icon/close.png',
+                                                    height: 24,
+                                                    color:
+                                                        Colors.purple.shade800,
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  const Text('إغلاق'),
+                                                  const SizedBox(width: 16),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.camera_alt),
+                                              const SizedBox(width: 10),
+                                              Text(mediaList[index]
+                                                  .photographer),
+                                            ],
+                                          ),
+                                          const Divider(thickness: 1),
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.location_pin),
+                                              const SizedBox(width: 10),
+                                              Text(mediaList[index].location),
+                                            ],
+                                          ),
+                                          const Divider(thickness: 1),
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.access_time),
+                                              const SizedBox(width: 10),
+                                              Text(mediaList[index].date),
+                                            ],
+                                          ),
+                                        ],
+                                      ));
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ));
 
           // (index + 1) % 5 == 0
           //   ?
