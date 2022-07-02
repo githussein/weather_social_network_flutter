@@ -160,7 +160,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
         title: const Text(
           'صور ومقاطع الطقس',
           style: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: false,
         elevation: 0,

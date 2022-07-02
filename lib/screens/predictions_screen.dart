@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:matar_weather/screens/sign_in_screen.dart';
@@ -8,8 +10,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
+import 'package:comment_box/comment/comment.dart';
 import '../providers/Auth.dart';
 import '../services/ad_helper.dart';
+import '../widgets/VideoTile.dart';
 import 'notifications_screen.dart';
 import '../screens/settings.dart';
 import '../providers/posts.dart';
@@ -29,24 +33,13 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
   var _isShowComment = false;
   bool _isBannerAdReady = false;
   var _isLiked = false;
-  var videoController = VideoPlayerController.network(
-      'https://admin.rain-app.com/storage/outlooks/62a6456abd7b7.mp4');
+  int _snappedPageIndex = 0;
   final _commentController = TextEditingController(text: '');
-  // FocusNode _focus = FocusNode();
+  RewardedAd? _rewardedAd;
 
   int _current = 0;
   late AdSize _adSize;
-
-  @override
-  void initState() {
-    super.initState();
-
-    ///VIDEO PLAYER
-    videoController
-      ..addListener(() => setState(() {}))
-      ..setLooping(true)
-      ..initialize().then((_) => videoController.play());
-  }
+  final adHelper = AdHelper();
 
   @override
   void didChangeDependencies() async {
@@ -64,12 +57,6 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
   }
 
   @override
-  void dispose() {
-    videoController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var posts = Provider.of<Posts>(context, listen: false).posts;
     _adSize =
@@ -80,7 +67,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
         title: const Text(
           'التوقعات ومتابعة الحالات',
           style: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         elevation: 0,
         centerTitle: false,
@@ -97,10 +84,10 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                 color: Colors.white,
               )),
           IconButton(
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SettingsScreen())),
+              onPressed: () =>  Navigator.of(context, rootNavigator: true)
+                  .push(MaterialPageRoute(
+                  builder: (_) =>
+                      const SettingsScreen())),
               icon: const Icon(
                 Icons.menu,
                 size: 32,
@@ -112,6 +99,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
         scrollDirection: Axis.vertical,
         // physics: const BouncingScrollPhysics(),
         itemCount: posts.length,
+        onPageChanged: (int page) => setState(() => _snappedPageIndex = page),
         itemBuilder: (context, index) {
           // _isBannerAdReady = false;
           ads['myBanner$index'] = BannerAd(
@@ -191,7 +179,12 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                     child: file['file']
                                             .toString()
                                             .contains('.mp4')
-                                        ? VideoPlayer(videoController)
+                                        ? VideoTile(
+                                            videoUrl:
+                                                'https://admin.rain-app.com/storage/outlooks/${file['file']}',
+                                            currentIndex: index,
+                                            snappedPage: _snappedPageIndex,
+                                          )
                                         : CachedNetworkImage(
                                             fit: BoxFit.cover,
                                             imageUrl:
@@ -768,9 +761,6 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                               child: Focus(
                                                 onFocusChange: (hasFocus) {
                                                   if (hasFocus) {
-                                                    FocusScope.of(context)
-                                                        .requestFocus(
-                                                            FocusNode());
                                                     if (!Provider.of<Auth>(
                                                             context,
                                                             listen: false)
@@ -779,14 +769,21 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  const SignInScreen()));
+                                                                  const SignInScreen())).then(
+                                                          (value) => FocusScope
+                                                                  .of(context)
+                                                              .requestFocus(
+                                                                  FocusNode()));
                                                     }
+                                                  } else {
+                                                    print(
+                                                        'loading rewarded ad...');
+                                                    loadRewardedAd();
                                                   }
                                                 },
                                                 child: TextField(
                                                   controller:
                                                       _commentController,
-                                                  // focusNode: _focus,
                                                   decoration: InputDecoration(
                                                     isDense: true,
                                                     contentPadding:
@@ -809,44 +806,156 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                       _isCommenting = true);
                                                   if (_commentController
                                                       .text.isNotEmpty) {
-                                                    try {
-                                                      await Provider.of<
-                                                                  Engagement>(
-                                                              context,
-                                                              listen: false)
-                                                          .comment(
-                                                              context,
-                                                              posts[index].id,
-                                                              _commentController
-                                                                  .text);
+                                                    if (_rewardedAd != null) {
+                                                      _rewardedAd!
+                                                              .fullScreenContentCallback =
+                                                          FullScreenContentCallback(
+                                                              onAdShowedFullScreenContent:
+                                                                  (RewardedAd
+                                                                      ad) {
+                                                        print(
+                                                            "Ad onAdShowedFullScreenContent");
+                                                      }, onAdDismissedFullScreenContent:
+                                                                  (RewardedAd
+                                                                      ad) {
+                                                        ad.dispose();
+                                                        loadRewardedAd();
+                                                      }, onAdFailedToShowFullScreenContent:
+                                                                  (RewardedAd
+                                                                          ad,
+                                                                      AdError
+                                                                          error) {
+                                                        ad.dispose();
+                                                        loadRewardedAd();
+                                                      });
 
-                                                      if (comment.isEmpty) {
-                                                        await Provider.of<
-                                                                    Posts>(
-                                                                context,
-                                                                listen: false)
-                                                            .getAllPosts()
-                                                            .then((_) {
-                                                          setState(() =>
-                                                              _commentController
-                                                                  .clear());
-                                                        });
-                                                      }
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        SnackBar(
-                                                          backgroundColor:
-                                                              Colors.green
-                                                                  .shade500,
-                                                          content: const Text(
-                                                              'تم إرسال التعليق'),
-                                                        ),
-                                                      );
-                                                    } catch (e) {
-                                                      print(
-                                                          'failed to comment');
+                                                      _rewardedAd!
+                                                          .setImmersiveMode(
+                                                              true);
+                                                      _rewardedAd!.show(
+                                                          onUserEarnedReward:
+                                                              (AdWithoutView ad,
+                                                                  RewardItem
+                                                                      reward) async {
+                                                        try {
+                                                          await Provider.of<
+                                                                      Engagement>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .comment(
+                                                                  context,
+                                                                  posts[index]
+                                                                      .id,
+                                                                  _commentController
+                                                                      .text);
+
+                                                          if (comment.isEmpty) {
+                                                            await Provider.of<
+                                                                        Posts>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .getAllPosts()
+                                                                .then((_) {
+                                                              setState(() =>
+                                                                  _commentController
+                                                                      .clear());
+                                                            });
+                                                          }
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              backgroundColor:
+                                                                  Colors.green
+                                                                      .shade500,
+                                                              content: const Text(
+                                                                  'تم إرسال التعليق'),
+                                                            ),
+                                                          );
+                                                        } catch (e) {
+                                                          print(
+                                                              'failed to comment');
+                                                        }
+                                                      });
                                                     }
+
+                                                    // showDialog(
+                                                    //     context: context,
+                                                    //     builder:
+                                                    //         (context) =>
+                                                    //             AlertDialog(
+                                                    //               title: const Text(
+                                                    //                   "إرسال تعليق",
+                                                    //                   textAlign:
+                                                    //                       TextAlign
+                                                    //                           .right),
+                                                    //               content: Text(
+                                                    //                   "لكي تتمكن من إرسال تعليق يلزم مشاهدة إعلان قصير.",
+                                                    //                   textAlign:
+                                                    //                       TextAlign
+                                                    //                           .right),
+                                                    //               actions: [
+                                                    //                 TextButton(
+                                                    //                   child: Text(
+                                                    //                       "موافق"),
+                                                    //                   onPressed:
+                                                    //                       () {
+                                                    //                     if (_rewardedAd !=
+                                                    //                         null) {
+                                                    //                       _rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(onAdShowedFullScreenContent: (RewardedAd
+                                                    //                           ad) {
+                                                    //                         print("Ad onAdShowedFullScreenContent");
+                                                    //                       }, onAdDismissedFullScreenContent: (RewardedAd
+                                                    //                           ad) {
+                                                    //                         ad.dispose();
+                                                    //                         loadRewardedAd();
+                                                    //                       }, onAdFailedToShowFullScreenContent:
+                                                    //                           (RewardedAd ad, AdError error) {
+                                                    //                         ad.dispose();
+                                                    //                         loadRewardedAd();
+                                                    //                       });
+                                                    //
+                                                    //                       _rewardedAd!
+                                                    //                           .setImmersiveMode(true);
+                                                    //                       _rewardedAd!.show(onUserEarnedReward:
+                                                    //                           (AdWithoutView ad, RewardItem reward) async {
+                                                    //                         try {
+                                                    //                           await Provider.of<Engagement>(context, listen: false).comment(context, posts[index].id, _commentController.text);
+                                                    //
+                                                    //                           if (comment.isEmpty) {
+                                                    //                             await Provider.of<Posts>(context, listen: false).getAllPosts().then((_) {
+                                                    //                               setState(() => _commentController.clear());
+                                                    //                             });
+                                                    //                           }
+                                                    //                           ScaffoldMessenger.of(context).showSnackBar(
+                                                    //                             SnackBar(
+                                                    //                               backgroundColor: Colors.green.shade500,
+                                                    //                               content: const Text('تم إرسال التعليق'),
+                                                    //                             ),
+                                                    //                           );
+                                                    //                         } catch (e) {
+                                                    //                           print('failed to comment');
+                                                    //                         }
+                                                    //                       });
+                                                    //                     }
+                                                    //
+                                                    //                     _rewardedAd?.dispose();
+                                                    //                     setState(() =>
+                                                    //                         Navigator.of(context).pop());
+                                                    //                   },
+                                                    //                 ),
+                                                    //                 TextButton(
+                                                    //                   child: Text(
+                                                    //                       "إلغاء"),
+                                                    //                   onPressed:
+                                                    //                       () {
+                                                    //                     Navigator.of(context)
+                                                    //                         .pop();
+                                                    //                   },
+                                                    //                 ),
+                                                    //               ],
+                                                    //             ));
                                                   }
                                                   setState(() =>
                                                       _isCommenting = false);
@@ -894,5 +1003,19 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
         },
       ),
     );
+  }
+
+  void loadRewardedAd() {
+    RewardedAd.load(
+        adUnitId: Platform.isIOS
+            ? "ca-app-pub-3940256099942544/1712485313"
+            : "ca-app-pub-3940256099942544/5224354917",
+        request: const AdRequest(),
+        rewardedAdLoadCallback:
+            RewardedAdLoadCallback(onAdLoaded: (RewardedAd ad) {
+          _rewardedAd = ad;
+        }, onAdFailedToLoad: (LoadAdError error) {
+          _rewardedAd = null;
+        }));
   }
 }

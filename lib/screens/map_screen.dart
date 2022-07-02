@@ -74,7 +74,7 @@ class _MapScreenState extends State<MapScreen> {
         title: const Text(
           'خرائط الطقس',
           style: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         elevation: 0,
         centerTitle: false,
