@@ -15,48 +15,51 @@ class FollowUsScreen extends StatelessWidget {
       }
     }
 
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Drawer(
-          child: Column(
-        children: [
-          AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back, size: 30),
-              onPressed: () => Navigator.of(context).pop(),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Drawer(
+            child: Column(
+          children: [
+            AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back, size: 30),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              title: const Text(
+                'تابعنا عبر وسائل التواصل الأجتماعي',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+              elevation: 0,
+              centerTitle: false,
+              backgroundColor: const Color(0xff426981),
             ),
-            title: const Text(
-              'تابعنا عبر وسائل التواصل الأجتماعي',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+            Expanded(
+              child: ListView(
+                children: <Widget>[
+                  Container(height: 1, color: Colors.blueGrey.shade100),
+                  InkWell(
+                      onTap: () => _launchInBrowser(
+                          Uri.parse('https://www.instagram.com/db5pp')),
+                      child: const AppDrawerItem(
+                          'انستقرام', 'assets/icon/globe.png')),
+                  _buildDivider(),
+                  InkWell(
+                      onTap: () => _launchInBrowser(Uri.parse(
+                          'https://twitter.com/db5pp?s=11&t=zMmF0Nu8_nWUD_Eohjk_Mw')),
+                      child: const AppDrawerItem(
+                          'تويتر', 'assets/icon/globe.png')),
+                  Container(height: 1, color: Colors.blueGrey.shade100),
+                ],
+              ),
             ),
-            elevation: 0,
-            centerTitle: false,
-            backgroundColor: const Color(0xff426981),
-          ),
-          Expanded(
-            child: ListView(
-              children: <Widget>[
-                Container(height: 1, color: Colors.blueGrey.shade100),
-                InkWell(
-                    onTap: () => _launchInBrowser(
-                        Uri.parse('https://www.instagram.com/db5pp')),
-                    child: const AppDrawerItem(
-                        'انستقرام', 'assets/icon/globe.png')),
-                _buildDivider(),
-                InkWell(
-                    onTap: () => _launchInBrowser(Uri.parse(
-                        'https://twitter.com/db5pp?s=11&t=zMmF0Nu8_nWUD_Eohjk_Mw')),
-                    child:
-                        const AppDrawerItem('تويتر', 'assets/icon/globe.png')),
-                Container(height: 1, color: Colors.blueGrey.shade100),
-              ],
-            ),
-          ),
-        ],
-      )),
+          ],
+        )),
+      ),
     );
   }
 }
