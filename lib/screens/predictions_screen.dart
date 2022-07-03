@@ -95,6 +95,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
               )),
         ],
       ),
+      resizeToAvoidBottomInset: true,
       body: PageView.builder(
         scrollDirection: Axis.vertical,
         // physics: const BouncingScrollPhysics(),
@@ -774,6 +775,229 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                                                   .of(context)
                                                               .requestFocus(
                                                                   FocusNode()));
+                                                    } else{
+                                                      showBottomSheet(
+                                                          context: context,
+                                                          builder: (context) => Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child: Focus(
+                                                                  onFocusChange: (hasFocus) {
+                                                                    if (hasFocus) {
+                                                                      if (!Provider.of<Auth>(
+                                                                          context,
+                                                                          listen: false)
+                                                                          .isSignedIn) {
+                                                                        Navigator.push(
+                                                                            context,
+                                                                            MaterialPageRoute(
+                                                                                builder: (context) =>
+                                                                                const SignInScreen())).then(
+                                                                                (value) => FocusScope
+                                                                                .of(context)
+                                                                                .requestFocus(
+                                                                                FocusNode()));
+                                                                      } else{
+                                                                        showBottomSheet(
+                                                                            context: context,
+                                                                            builder: (context) => Container());
+                                                                      }
+                                                                    } else {
+                                                                      print(
+                                                                          'loading rewarded ad...');
+                                                                      loadRewardedAd();
+                                                                    }
+                                                                  },
+                                                                  child: TextField(
+                                                                    controller:
+                                                                    _commentController,
+                                                                    decoration: InputDecoration(
+                                                                      isDense: true,
+                                                                      contentPadding:
+                                                                      const EdgeInsets
+                                                                          .symmetric(
+                                                                          horizontal: 16),
+                                                                      hintText: 'أرسل تعليق',
+                                                                      border: OutlineInputBorder(
+                                                                          borderRadius:
+                                                                          BorderRadius
+                                                                              .circular(30)),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              // const SizedBox(width: 4),
+                                                              IconButton(
+                                                                  onPressed: () async {
+                                                                    setState(() =>
+                                                                    _isCommenting = true);
+                                                                    if (_commentController
+                                                                        .text.isNotEmpty) {
+                                                                      if (_rewardedAd != null) {
+                                                                        _rewardedAd!
+                                                                            .fullScreenContentCallback =
+                                                                            FullScreenContentCallback(
+                                                                                onAdShowedFullScreenContent:
+                                                                                    (RewardedAd
+                                                                                ad) {
+                                                                                  print(
+                                                                                      "Ad onAdShowedFullScreenContent");
+                                                                                }, onAdDismissedFullScreenContent:
+                                                                                (RewardedAd
+                                                                            ad) {
+                                                                              ad.dispose();
+                                                                              loadRewardedAd();
+                                                                            }, onAdFailedToShowFullScreenContent:
+                                                                                (RewardedAd
+                                                                            ad,
+                                                                                AdError
+                                                                                error) {
+                                                                              ad.dispose();
+                                                                              loadRewardedAd();
+                                                                            });
+
+                                                                        _rewardedAd!
+                                                                            .setImmersiveMode(
+                                                                            true);
+                                                                        _rewardedAd!.show(
+                                                                            onUserEarnedReward:
+                                                                                (AdWithoutView ad,
+                                                                                RewardItem
+                                                                                reward) async {
+                                                                              try {
+                                                                                await Provider.of<
+                                                                                    Engagement>(
+                                                                                    context,
+                                                                                    listen: false)
+                                                                                    .comment(
+                                                                                    context,
+                                                                                    posts[index]
+                                                                                        .id,
+                                                                                    _commentController
+                                                                                        .text);
+
+                                                                                if (comment.isEmpty) {
+                                                                                  await Provider.of<
+                                                                                      Posts>(
+                                                                                      context,
+                                                                                      listen:
+                                                                                      false)
+                                                                                      .getAllPosts()
+                                                                                      .then((_) {
+                                                                                    setState(() =>
+                                                                                        _commentController
+                                                                                            .clear());
+                                                                                  });
+                                                                                }
+                                                                                ScaffoldMessenger.of(
+                                                                                    context)
+                                                                                    .showSnackBar(
+                                                                                  SnackBar(
+                                                                                    backgroundColor:
+                                                                                    Colors.green
+                                                                                        .shade500,
+                                                                                    content: const Text(
+                                                                                        'تم إرسال التعليق'),
+                                                                                  ),
+                                                                                );
+                                                                              } catch (e) {
+                                                                                print(
+                                                                                    'failed to comment');
+                                                                              }
+                                                                            });
+                                                                      }
+
+                                                                      // showDialog(
+                                                                      //     context: context,
+                                                                      //     builder:
+                                                                      //         (context) =>
+                                                                      //             AlertDialog(
+                                                                      //               title: const Text(
+                                                                      //                   "إرسال تعليق",
+                                                                      //                   textAlign:
+                                                                      //                       TextAlign
+                                                                      //                           .right),
+                                                                      //               content: Text(
+                                                                      //                   "لكي تتمكن من إرسال تعليق يلزم مشاهدة إعلان قصير.",
+                                                                      //                   textAlign:
+                                                                      //                       TextAlign
+                                                                      //                           .right),
+                                                                      //               actions: [
+                                                                      //                 TextButton(
+                                                                      //                   child: Text(
+                                                                      //                       "موافق"),
+                                                                      //                   onPressed:
+                                                                      //                       () {
+                                                                      //                     if (_rewardedAd !=
+                                                                      //                         null) {
+                                                                      //                       _rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(onAdShowedFullScreenContent: (RewardedAd
+                                                                      //                           ad) {
+                                                                      //                         print("Ad onAdShowedFullScreenContent");
+                                                                      //                       }, onAdDismissedFullScreenContent: (RewardedAd
+                                                                      //                           ad) {
+                                                                      //                         ad.dispose();
+                                                                      //                         loadRewardedAd();
+                                                                      //                       }, onAdFailedToShowFullScreenContent:
+                                                                      //                           (RewardedAd ad, AdError error) {
+                                                                      //                         ad.dispose();
+                                                                      //                         loadRewardedAd();
+                                                                      //                       });
+                                                                      //
+                                                                      //                       _rewardedAd!
+                                                                      //                           .setImmersiveMode(true);
+                                                                      //                       _rewardedAd!.show(onUserEarnedReward:
+                                                                      //                           (AdWithoutView ad, RewardItem reward) async {
+                                                                      //                         try {
+                                                                      //                           await Provider.of<Engagement>(context, listen: false).comment(context, posts[index].id, _commentController.text);
+                                                                      //
+                                                                      //                           if (comment.isEmpty) {
+                                                                      //                             await Provider.of<Posts>(context, listen: false).getAllPosts().then((_) {
+                                                                      //                               setState(() => _commentController.clear());
+                                                                      //                             });
+                                                                      //                           }
+                                                                      //                           ScaffoldMessenger.of(context).showSnackBar(
+                                                                      //                             SnackBar(
+                                                                      //                               backgroundColor: Colors.green.shade500,
+                                                                      //                               content: const Text('تم إرسال التعليق'),
+                                                                      //                             ),
+                                                                      //                           );
+                                                                      //                         } catch (e) {
+                                                                      //                           print('failed to comment');
+                                                                      //                         }
+                                                                      //                       });
+                                                                      //                     }
+                                                                      //
+                                                                      //                     _rewardedAd?.dispose();
+                                                                      //                     setState(() =>
+                                                                      //                         Navigator.of(context).pop());
+                                                                      //                   },
+                                                                      //                 ),
+                                                                      //                 TextButton(
+                                                                      //                   child: Text(
+                                                                      //                       "إلغاء"),
+                                                                      //                   onPressed:
+                                                                      //                       () {
+                                                                      //                     Navigator.of(context)
+                                                                      //                         .pop();
+                                                                      //                   },
+                                                                      //                 ),
+                                                                      //               ],
+                                                                      //             ));
+                                                                    }
+                                                                    setState(() =>
+                                                                    _isCommenting = false);
+                                                                  },
+                                                                  icon: _isCommenting
+                                                                      ? const Center(
+                                                                      child:
+                                                                      CircularProgressIndicator())
+                                                                      : const Icon(
+                                                                      Icons
+                                                                          .arrow_circle_up_outlined,
+                                                                      size: 36,
+                                                                      color: Colors.purple))
+                                                            ],
+                                                          ));
                                                     }
                                                   } else {
                                                     print(
