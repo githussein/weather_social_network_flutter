@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/Auth.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
+import '../providers/data.dart';
 import '../screens/choose_country_screen.dart';
 import 'map_screen.dart';
 import 'reels_screen.dart';
@@ -39,6 +40,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   };
 
   void _selectTab(String tabItem, int index) {
+    print('index: $index');
+    Provider.of<Data>(context, listen: false).setReelsTab(index == 2);
     if (tabItem == _currentPage) {
       _navigatorKeys[tabItem]!.currentState!.popUntil((route) => route.isFirst);
     } else {

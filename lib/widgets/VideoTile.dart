@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/data.dart';
 
 class VideoTile extends StatefulWidget {
   const VideoTile(
@@ -41,7 +44,13 @@ class _VideoTileState extends State<VideoTile> {
     widget.snappedPage == widget.currentIndex
         ? _videoController.play()
         : _videoController.pause();
-    if (widget.snappedPage == 0) _videoController.pause();
+
+    if (Provider.of<Data>(context).isReelsTab) {
+      _videoController.play();
+    } else {
+      _videoController.pause();
+    }
+
     return Container(
       color: Colors.black,
       child: FutureBuilder(

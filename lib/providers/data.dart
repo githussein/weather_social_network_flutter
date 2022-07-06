@@ -5,6 +5,13 @@ import '../models/notif.dart';
 
 /// maps, notifications, other data
 class Data with ChangeNotifier {
+  bool reelsTab = false;
+  bool get isReelsTab => reelsTab;
+  void setReelsTab(bool active) {
+    reelsTab = active;
+    notifyListeners();
+  }
+
   String _mapUrl =
       'https://www.meteoblue.com/ar/weather/maps/widget/oman?windAnimation=1#coords=4.33/25.78/53.29&map=windAnimation~rainbow~auto~10%20m%20above%20gnd~none';
   List<Notif> _notifs = [];
