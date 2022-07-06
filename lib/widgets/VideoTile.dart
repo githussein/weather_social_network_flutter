@@ -41,6 +41,7 @@ class _VideoTileState extends State<VideoTile> {
     widget.snappedPage == widget.currentIndex
         ? _videoController.play()
         : _videoController.pause();
+    if (widget.snappedPage == 0) _videoController.pause();
     return Container(
       color: Colors.black,
       child: FutureBuilder(

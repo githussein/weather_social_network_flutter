@@ -10,7 +10,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
-import 'package:comment_box/comment/comment.dart';
 import '../providers/Auth.dart';
 import '../services/ad_helper.dart';
 import '../widgets/VideoTile.dart';

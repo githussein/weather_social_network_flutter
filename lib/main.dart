@@ -19,7 +19,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
         title: 'Matar',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.purple,
+          primarySwatch: Colors.deepPurple,
         ),
         home: const Directionality(
           textDirection: TextDirection.rtl,
