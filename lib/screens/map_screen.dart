@@ -70,40 +70,6 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'خرائط الطقس',
-          style: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        elevation: 0,
-        centerTitle: false,
-        backgroundColor: const Color(0xff426981),
-        actions: [
-          IconButton(
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const NotificationsScreen())),
-              icon: const Icon(
-                Icons.notifications,
-                size: 30,
-                color: Colors.white,
-              )),
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SettingsScreen()));
-              },
-              icon: const Icon(
-                Icons.menu,
-                size: 32,
-                color: Colors.white,
-              )),
-        ],
-      ),
       body: Stack(
         children: [
           _isLoading

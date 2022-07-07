@@ -30,6 +30,7 @@ class _VideoTileState extends State<VideoTile> {
     _videoController = VideoPlayerController.network(widget.videoUrl);
     _initializeVideoPlayer = _videoController.initialize();
     _videoController.setLooping(true);
+    // _videoController.setVolume(0);
     // _videoController.play();
   }
 
@@ -45,17 +46,17 @@ class _VideoTileState extends State<VideoTile> {
         ? _videoController.play()
         : _videoController.pause();
 
-    if (Provider.of<Data>(context).isReelsTab) {
-      _videoController.play();
-    } else {
-      _videoController.pause();
-    }
-
     return Container(
       color: Colors.black,
       child: FutureBuilder(
           future: _initializeVideoPlayer,
           builder: (context, snapshot) {
+            if (Provider.of<Data>(context).isReelsTab) {
+              _videoController.play();
+            } else {
+              _videoController.pause();
+            }
+
             if (snapshot.connectionState == ConnectionState.done) {
               return VideoPlayer(_videoController);
             } else {

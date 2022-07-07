@@ -15,10 +15,8 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Drawer(
-            child: Column(
+      child: Scaffold(
+        body: Column(
           children: [
             AppBar(
               leading: IconButton(
@@ -51,10 +49,9 @@ class SettingsScreen extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   InkWell(
-                                    onTap: () => Navigator.push(
-                                        context,
+                                    onTap: () => Navigator.of(context).push(
                                         MaterialPageRoute(
-                                            builder: (context) =>
+                                            builder: (_) =>
                                                 const ProfileScreen())),
                                     child: Row(
                                       children: [
@@ -202,7 +199,7 @@ class SettingsScreen extends StatelessWidget {
             //           ),
             //         ))),
           ],
-        )),
+        ),
       ),
     );
   }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:matar_weather/screens/settings.dart';
 import 'package:provider/provider.dart';
 import '../providers/Auth.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../providers/data.dart';
 import '../screens/choose_country_screen.dart';
 import 'map_screen.dart';
+import 'notifications_screen.dart';
 import 'reels_screen.dart';
 import 'predictions_screen.dart';
 
@@ -20,6 +22,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   String _currentPage = 'Predictions';
   int _selectedIndex = 0;
+  String tabTitle = 'التوقعات ومتابعة الحالات';
 
   // Future<InitializationStatus> _initGoogleMobileAds() {
   //   return MobileAds.instance.initialize();
@@ -40,8 +43,20 @@ class _BottomNavBarState extends State<BottomNavBar> {
   };
 
   void _selectTab(String tabItem, int index) {
-    print('index: $index');
     Provider.of<Data>(context, listen: false).setReelsTab(index == 2);
+    switch (index) {
+      case 0:
+        tabTitle = 'التوقعات ومتابعة الحالات';
+        break;
+      case 1:
+        tabTitle = 'خرائط الطقس';
+        break;
+      case 2:
+        tabTitle = 'صور ومقاطع الطقس';
+        break;
+      default:
+        tabTitle = 'تطبيق مطر';
+    }
     if (tabItem == _currentPage) {
       _navigatorKeys[tabItem]!.currentState!.popUntil((route) => route.isFirst);
     } else {
@@ -114,6 +129,32 @@ class _BottomNavBarState extends State<BottomNavBar> {
         return isFirstRouteInCurrentTab;
       },
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            tabTitle,
+            style: const TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: const Color(0xff426981),
+          actions: [
+            IconButton(
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NotificationsScreen())),
+                icon: const Icon(
+                  Icons.notifications,
+                  size: 30,
+                  color: Colors.white,
+                )),
+            IconButton(
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const SettingsScreen())),
+                icon: const Icon(Icons.menu, size: 32, color: Colors.white)),
+          ],
+        ),
         body: Stack(
           children: [
             _buildOffstageNavigator('Reels'),

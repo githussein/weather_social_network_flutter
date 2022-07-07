@@ -4,6 +4,7 @@ import 'package:matar_weather/widgets/VideoTile.dart';
 import 'package:provider/provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:video_player/video_player.dart';
+import '../providers/data.dart';
 import '../screens/settings.dart';
 import '../providers/posts.dart';
 import '../models/media.dart';
@@ -156,50 +157,6 @@ class _ReelsScreenState extends State<ReelsScreen> {
     return Scaffold(
       // extendBodyBehindAppBar: true,
       backgroundColor: Colors.black87,
-      appBar: AppBar(
-        title: const Text(
-          'صور ومقاطع الطقس',
-          style: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        centerTitle: false,
-        elevation: 0,
-        backgroundColor: const Color(0xff426981),
-        actions: [
-          IconButton(
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SendPhotoScreen())),
-              icon: const Icon(
-                Icons.add_box_outlined,
-                size: 30,
-                color: Colors.white,
-              )),
-          IconButton(
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const NotificationsScreen())),
-              icon: const Icon(
-                Icons.notifications,
-                size: 30,
-                color: Colors.white,
-              )),
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SettingsScreen()));
-              },
-              icon: const Icon(
-                Icons.menu,
-                size: 32,
-                color: Colors.white,
-              )),
-        ],
-      ),
       body: PageView.builder(
         scrollDirection: Axis.vertical,
         itemCount: mediaList.length,
