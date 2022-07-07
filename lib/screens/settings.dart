@@ -16,29 +16,28 @@ class SettingsScreen extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, size: 30),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          title: const Text(
+            'المزيد',
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          elevation: 0,
+          centerTitle: false,
+          backgroundColor: const Color(0xff426981),
+        ),
         body: Column(
           children: [
-            AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back, size: 30),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              title: const Text(
-                'المزيد',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-              elevation: 0,
-              centerTitle: false,
-              backgroundColor: const Color(0xff426981),
-            ),
             Expanded(
               child: ListView(
                 children: <Widget>[
                   Container(height: 1, color: Colors.blueGrey.shade100),
-                  Provider.of<Auth>(context).isSignedIn
+                  _buildDivider(),
+                  Provider.of<Auth>(context, listen: false).isSignedIn
                       ? Column(
                           children: [
                             Padding(
@@ -91,10 +90,9 @@ class SettingsScreen extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   InkWell(
-                                    onTap: () => Navigator.push(
-                                        context,
+                                    onTap: () => Navigator.of(context).push(
                                         MaterialPageRoute(
-                                            builder: (context) =>
+                                            builder: (_) =>
                                                 const SignInScreen())),
                                     child: Row(
                                       children: const [

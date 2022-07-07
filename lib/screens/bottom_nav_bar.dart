@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matar_weather/screens/send_photo_screen.dart';
 import 'package:matar_weather/screens/settings.dart';
 import 'package:provider/provider.dart';
 import '../providers/Auth.dart';
@@ -116,60 +117,72 @@ class _BottomNavBarState extends State<BottomNavBar> {
         label: 'صور ومقاطع الطقس',
       ),
     ];
-    return WillPopScope(
-      onWillPop: () async {
-        final isFirstRouteInCurrentTab =
-            !await _navigatorKeys[_selectedIndex]!.currentState!.maybePop();
-        if (isFirstRouteInCurrentTab) {
-          if (_currentPage != 'Predictions') {
-            _selectTab('Predictions', 0);
-            return false;
+
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: WillPopScope(
+        onWillPop: () async {
+          final isFirstRouteInCurrentTab =
+              !await _navigatorKeys[_selectedIndex]!.currentState!.maybePop();
+          if (isFirstRouteInCurrentTab) {
+            if (_currentPage != 'Predictions') {
+              _selectTab('Predictions', 0);
+              return false;
+            }
           }
-        }
-        return isFirstRouteInCurrentTab;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            tabTitle,
-            style: const TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          return isFirstRouteInCurrentTab;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: Text(
+              tabTitle,
+              style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            elevation: 0,
+            centerTitle: false,
+            backgroundColor: const Color(0xff426981),
+            actions: [
+              IconButton(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const SendPhotoScreen())),
+                  icon: const Icon(Icons.add_box_outlined,
+                      size: 32, color: Colors.white)),
+              IconButton(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NotificationsScreen())),
+                  icon: const Icon(
+                    Icons.notifications,
+                    size: 30,
+                    color: Colors.white,
+                  )),
+              IconButton(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const SettingsScreen())),
+                  icon: const Icon(Icons.menu, size: 32, color: Colors.white)),
+            ],
           ),
-          elevation: 0,
-          centerTitle: false,
-          backgroundColor: const Color(0xff426981),
-          actions: [
-            IconButton(
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NotificationsScreen())),
-                icon: const Icon(
-                  Icons.notifications,
-                  size: 30,
-                  color: Colors.white,
-                )),
-            IconButton(
-                onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const SettingsScreen())),
-                icon: const Icon(Icons.menu, size: 32, color: Colors.white)),
-          ],
-        ),
-        body: Stack(
-          children: [
-            _buildOffstageNavigator('Reels'),
-            _buildOffstageNavigator('Map'),
-            _buildOffstageNavigator('Predictions'),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedFontSize: 13,
-          unselectedFontSize: 13,
-          selectedItemColor: Colors.black,
-          items: items,
-          currentIndex: _selectedIndex,
-          onTap: (int index) => _selectTab(pageKeys[index], index),
+          body: Stack(
+            children: [
+              _buildOffstageNavigator('Reels'),
+              _buildOffstageNavigator('Map'),
+              _buildOffstageNavigator('Predictions'),
+            ],
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            selectedFontSize: 13,
+            unselectedFontSize: 13,
+            selectedItemColor: Colors.black,
+            items: items,
+            currentIndex: _selectedIndex,
+            onTap: (int index) => _selectTab(pageKeys[index], index),
+          ),
         ),
       ),
     );

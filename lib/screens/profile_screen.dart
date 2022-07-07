@@ -68,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         const EditProfileScreen())),
                             child: const ImageIcon(
                               AssetImage('assets/icon/user.png'),
-                              size: 32,
+                              size: 36,
                               color: Colors.white,
                             ),
                           ),

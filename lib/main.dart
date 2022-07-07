@@ -34,6 +34,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.deepPurple,
         ),
+        routes: {
+          BottomNavBar.routeName: (context) => const BottomNavBar(),
+        },
         home: const Directionality(
           textDirection: TextDirection.rtl,
           child: BottomNavBar(),

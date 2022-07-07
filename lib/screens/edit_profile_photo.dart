@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
+import 'bottom_nav_bar.dart';
 import 'predictions_screen.dart';
 import '../providers/Auth.dart';
 
@@ -302,9 +303,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   // 'Content-Type': 'multipart/form-data',
                                   'Authorization': userToken!,
                                 };
-                                String fileName = image!.path.split('/').last;
-                                var picture = await http.MultipartFile.fromPath(
-                                    fileName, image!.path);
+                                var picture;
+                                if (image != null) {
+                                  String fileName = image!.path.split('/').last;
+                                  picture = await http.MultipartFile.fromPath(
+                                      fileName, image!.path);
+                                }
                                 Map<String, String> requestBody =
                                     <String, String>{
                                   'name': nameController.text,
@@ -320,9 +324,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         ..headers.addAll(
                                             headers) //if u have headers, basic auth, token bearer... Else remove line
                                         ..fields.addAll(requestBody)
-                                        ..files.add(
-                                            await http.MultipartFile.fromPath(
-                                                fileName, image!.path));
+                                        ..files.add(picture);
                                   var response = await request.send();
                                   print('sendStatus: ${response.statusCode}');
                                   // String fileName = image!.path.split('/').last;
@@ -414,14 +416,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   ),
                                 );
 
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        const PredictionsScreen()));
+                                // Navigator.of(context, rootNavigator: true)
+                                //     .pushNamedAndRemoveUntil(
+                                //         '/', (Route<dynamic> route) => false);
+                                Navigator.of(context)
+                                    .pushNamed(BottomNavBar.routeName);
                               } catch (error) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                     backgroundColor: Colors.deepPurple,
-                                    content: const Text(
+                                    content: Text(
                                         'فشل تسجيل الخروج. تحقق من الاتصال بالانترنت.'),
                                   ),
                                 );

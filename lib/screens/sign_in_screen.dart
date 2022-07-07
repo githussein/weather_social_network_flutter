@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../providers/Auth.dart';
+import 'bottom_nav_bar.dart';
 import 'predictions_screen.dart';
 import 'forgot_pass_screen.dart';
 import 'register_screen.dart';
@@ -141,6 +142,8 @@ class _SignInScreen extends State<SignInScreen> {
                                   .signIn(_email, _password);
 
                           if (statusCode == 200) {
+                            if (!mounted) return;
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 backgroundColor: Colors.green.shade500,
@@ -148,16 +151,20 @@ class _SignInScreen extends State<SignInScreen> {
                               ),
                             );
 
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const PredictionsScreen()));
+                            // Navigator.pushReplacement(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             const BottomAppBar()));
+                            Navigator.of(context)
+                                .pushNamed(BottomNavBar.routeName);
                           } else if (statusCode == 404) {
+                            if (!mounted) return;
+
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 backgroundColor: Colors.deepPurple,
-                                content: const Text(
+                                content: Text(
                                     'البريد الإلكرتوني أو رمز الدخول غير صحيح.'),
                               ),
                             );
