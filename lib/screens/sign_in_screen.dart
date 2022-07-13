@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../providers/Auth.dart';
 import 'bottom_nav_bar.dart';
-import 'predictions_screen.dart';
 import 'forgot_pass_screen.dart';
 import 'register_screen.dart';
 
@@ -234,6 +233,7 @@ class _SignInScreen extends State<SignInScreen> {
                         await Provider.of<Auth>(context, listen: false)
                             .signInWithFacebook();
 
+                        if (!mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             backgroundColor: Colors.green.shade500,
@@ -241,16 +241,13 @@ class _SignInScreen extends State<SignInScreen> {
                           ),
                         );
 
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const PredictionsScreen()));
+                        Navigator.of(context).pushNamed(BottomNavBar.routeName);
                       } catch (error) {
+                        if (!mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             backgroundColor: Colors.deepPurple,
-                            content: const Text(
+                            content: Text(
                                 'فشل تسجيل الدخول. تحقق من الاتصال بالانترنت.'),
                           ),
                         );
@@ -285,24 +282,18 @@ class _SignInScreen extends State<SignInScreen> {
                       try {
                         await Provider.of<Auth>(context, listen: false)
                             .signInWithGoogle();
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             backgroundColor: Colors.green.shade500,
-                            content: const Text('تم تسجيل الدخول بنجاح'),
-                          ),
-                        );
+                            content: const Text('تم تسجيل الدخول بنجاح')));
 
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const PredictionsScreen()));
+                        Navigator.of(context).pushNamed(BottomNavBar.routeName);
                       } catch (error) {
+                        if (!mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             backgroundColor: Colors.deepPurple,
-                            content: const Text(
+                            content: Text(
                                 'فشل تسجيل الدخول. تحقق من الاتصال بالانترنت.'),
                           ),
                         );

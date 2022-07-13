@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:provider/provider.dart';
-
+import 'package:cached_video_player/cached_video_player.dart';
 import '../providers/data.dart';
 
 class VideoTile extends StatefulWidget {
@@ -21,13 +21,13 @@ class VideoTile extends StatefulWidget {
 }
 
 class _VideoTileState extends State<VideoTile> {
-  late VideoPlayerController _videoController;
+  late CachedVideoPlayerController _videoController;
   late Future _initializeVideoPlayer;
 
   @override
   void initState() {
     super.initState();
-    _videoController = VideoPlayerController.network(widget.videoUrl);
+    _videoController = CachedVideoPlayerController.network(widget.videoUrl);
     _initializeVideoPlayer = _videoController.initialize();
     _videoController.setLooping(true);
     // _videoController.setVolume(0);
@@ -58,7 +58,7 @@ class _VideoTileState extends State<VideoTile> {
             }
 
             if (snapshot.connectionState == ConnectionState.done) {
-              return VideoPlayer(_videoController);
+              return CachedVideoPlayer(_videoController);
             } else {
               return const Center(child: CircularProgressIndicator());
             }
