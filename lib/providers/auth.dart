@@ -138,9 +138,10 @@ class Auth with ChangeNotifier {
     int statusCode = 0;
     try {
       _googleSignIn.signIn().then((userData) {
-        username = userData!.displayName!;
-        userEmail = userData.email;
-        googleToken = userData.id;
+        username = userData!.displayName ?? '';
+        userEmail = userData.email ?? '';
+        googleToken = userData.id ?? '';
+        userPic = userData.displayName ?? '';
       }).then((_) async {
         final response = await http.post(
           Uri.parse('https://admin.rain-app.com/api/auth/social/google'),

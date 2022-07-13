@@ -190,7 +190,7 @@ class _SendPhotoScreen extends State<SendPhotoScreen> {
                             print('sendStatus: $e');
                             if (!mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor: Colors.purple.shade700,
+                              backgroundColor: Colors.deepPurple,
                               content: const Text('Internal server error'),
                             ));
                           }

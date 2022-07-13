@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/Auth.dart';
@@ -74,9 +75,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                       ),
-                      const Image(
-                          image: AssetImage('assets/img/profile.png'),
-                          height: 60),
+                      Provider.of<Auth>(context).userPic == ''
+                          ? const Image(
+                              image: AssetImage('assets/img/profile.png'),
+                              height: 60)
+                          : CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl: Provider.of<Auth>(context).userPic),
                       const SizedBox(width: 10),
                       Text(Provider.of<Auth>(context).username,
                           overflow: TextOverflow.clip,

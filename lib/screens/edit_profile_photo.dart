@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -108,13 +109,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : const ClipOval(
-                                child: Image(
-                                    fit: BoxFit.cover,
-                                    width: 70,
-                                    height: 70,
-                                    image:
-                                        AssetImage('assets/img/profile.png')),
+                            : ClipOval(
+                                child: Provider.of<Auth>(context).userPic == ''
+                                    ? const Image(
+                                        image: AssetImage(
+                                            'assets/img/profile.png'),
+                                        height: 60)
+                                    : CachedNetworkImage(
+                                        fit: BoxFit.cover,
+                                        imageUrl:
+                                            Provider.of<Auth>(context).userPic),
                               ),
                       )),
                     ),
