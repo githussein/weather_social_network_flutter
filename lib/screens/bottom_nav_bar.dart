@@ -146,11 +146,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
             centerTitle: false,
             backgroundColor: const Color(0xff426981),
             actions: [
-              IconButton(
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const SendPhotoScreen())),
-                  icon: const Icon(Icons.add_box_outlined,
-                      size: 32, color: Colors.white)),
+              if (Provider.of<Data>(context).activeTab == 2)
+                IconButton(
+                    onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) => const SendPhotoScreen())),
+                    icon: const Icon(Icons.add_box_outlined,
+                        size: 32, color: Colors.white)),
               IconButton(
                   onPressed: () => Navigator.push(
                       context,
