@@ -217,7 +217,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
                         child: Container(
                           padding: const EdgeInsets.only(bottom: 16, right: 8),
                           child: IconButton(
-                            icon: Icon(Icons.info_outline,
+                            icon: const Icon(Icons.info_outline,
                                 color: Colors.white38, size: 36),
                             onPressed: () {
                               showBottomSheet(

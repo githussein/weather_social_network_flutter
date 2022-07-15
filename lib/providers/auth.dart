@@ -139,8 +139,8 @@ class Auth with ChangeNotifier {
     try {
       _googleSignIn.signIn().then((userData) {
         username = userData!.displayName ?? '';
-        userEmail = userData.email ?? '';
-        googleToken = userData.id ?? '';
+        userEmail = userData.email;
+        googleToken = userData.id;
         userPic = userData.displayName ?? '';
       }).then((_) async {
         final response = await http.post(

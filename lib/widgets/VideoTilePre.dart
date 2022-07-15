@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:cached_video_player/cached_video_player.dart';
 import '../providers/data.dart';
 
-class VideoTile extends StatefulWidget {
-  const VideoTile(
+class VideoTilePre extends StatefulWidget {
+  const VideoTilePre(
       {Key? key,
       required this.videoUrl,
       required this.snappedPage,
@@ -17,10 +17,10 @@ class VideoTile extends StatefulWidget {
   final int currentIndex;
 
   @override
-  State<VideoTile> createState() => _VideoTileState();
+  State<VideoTilePre> createState() => _VideoTilePreState();
 }
 
-class _VideoTileState extends State<VideoTile> {
+class _VideoTilePreState extends State<VideoTilePre> {
   late CachedVideoPlayerController _videoController;
   late Future _initializeVideoPlayer;
 
@@ -42,16 +42,16 @@ class _VideoTileState extends State<VideoTile> {
 
   @override
   Widget build(BuildContext context) {
-    widget.snappedPage == widget.currentIndex
-        ? _videoController.play()
-        : _videoController.pause();
+    // widget.snappedPage == widget.currentIndex
+    //     ? _videoController.play()
+    //     : _videoController.pause();
 
     return Container(
       color: Colors.black,
       child: FutureBuilder(
           future: _initializeVideoPlayer,
           builder: (context, snapshot) {
-            if (Provider.of<Data>(context).activeTab == 2) {
+            if (Provider.of<Data>(context).activeTab == 0) {
               _videoController.play();
             } else {
               _videoController.pause();

@@ -13,6 +13,7 @@ import 'package:chewie/chewie.dart';
 import '../providers/Auth.dart';
 import '../services/ad_helper.dart';
 import '../widgets/VideoTile.dart';
+import '../widgets/VideoTilePre.dart';
 import 'notifications_screen.dart';
 import '../screens/settings.dart';
 import '../providers/posts.dart';
@@ -147,7 +148,7 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                     child: file['file']
                                             .toString()
                                             .contains('.mp4')
-                                        ? VideoTile(
+                                        ? VideoTilePre(
                                             videoUrl:
                                                 'https://admin.rain-app.com/storage/outlooks/${file['file']}',
                                             currentIndex: index,

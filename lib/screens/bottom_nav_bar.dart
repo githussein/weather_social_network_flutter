@@ -44,7 +44,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   };
 
   void _selectTab(String tabItem, int index) {
-    Provider.of<Data>(context, listen: false).setReelsTab(index == 2);
+    Provider.of<Data>(context, listen: false).setActiveTab(index);
     switch (index) {
       case 0:
         tabTitle = 'التوقعات ومتابعة الحالات';

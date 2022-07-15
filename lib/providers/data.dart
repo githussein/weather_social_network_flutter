@@ -5,10 +5,9 @@ import '../models/notif.dart';
 
 /// maps, notifications, other data
 class Data with ChangeNotifier {
-  bool reelsTab = false;
-  bool get isReelsTab => reelsTab;
-  void setReelsTab(bool active) {
-    reelsTab = active;
+  int activeTab = 0;
+  void setActiveTab(int tabNum) {
+    activeTab = tabNum;
     notifyListeners();
   }
 
