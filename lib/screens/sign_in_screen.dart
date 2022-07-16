@@ -157,8 +157,10 @@ class _SignInScreen extends State<SignInScreen> {
                               //     MaterialPageRoute(
                               //         builder: (context) =>
                               //             const BottomAppBar()));
-                              Navigator.of(context)
-                                  .pushNamed(BottomNavBar.routeName);
+                              Navigator.popUntil(
+                                  context, (route) => route.isFirst);
+                              // Navigator.of(context)
+                              //     .pushNamed(BottomNavBar.routeName);
                             } else if (statusCode == 404) {
                               if (!mounted) return;
 
@@ -243,8 +245,9 @@ class _SignInScreen extends State<SignInScreen> {
                             ),
                           );
 
-                          Navigator.of(context)
-                              .pushNamed(BottomNavBar.routeName);
+                          Navigator.popUntil(context, (route) => route.isFirst);
+                          // Navigator.of(context)
+                          //     .pushNamed(BottomNavBar.routeName);
                         } catch (error) {
                           if (!mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -290,8 +293,9 @@ class _SignInScreen extends State<SignInScreen> {
                               backgroundColor: Colors.green.shade500,
                               content: const Text('تم تسجيل الدخول بنجاح')));
 
-                          Navigator.of(context)
-                              .pushNamed(BottomNavBar.routeName);
+                          Navigator.popUntil(context, (route) => route.isFirst);
+                          // Navigator.of(context)
+                          //     .pushNamed(BottomNavBar.routeName);
                         } catch (error) {
                           if (!mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(

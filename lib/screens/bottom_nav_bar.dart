@@ -148,24 +148,52 @@ class _BottomNavBarState extends State<BottomNavBar> {
             actions: [
               if (Provider.of<Data>(context).activeTab == 2)
                 IconButton(
-                    onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (_) => const SendPhotoScreen())),
+                    onPressed: () {
+                      int oldActiveTab =
+                          Provider.of<Data>(context, listen: false).activeTab;
+                      Provider.of<Data>(context, listen: false).setActiveTab(5);
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(
+                              builder: (_) => const SendPhotoScreen()))
+                          .then((_) {
+                        Provider.of<Data>(context, listen: false)
+                            .setActiveTab(oldActiveTab);
+                      });
+                    },
                     icon: const Icon(Icons.add_box_outlined,
                         size: 32, color: Colors.white)),
               IconButton(
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const NotificationsScreen())),
+                  onPressed: () {
+                    int oldActiveTab =
+                        Provider.of<Data>(context, listen: false).activeTab;
+                    Provider.of<Data>(context, listen: false).setActiveTab(5);
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const NotificationsScreen()))
+                        .then((_) {
+                      Provider.of<Data>(context, listen: false)
+                          .setActiveTab(oldActiveTab);
+                    });
+                  },
                   icon: const Icon(
                     Icons.notifications,
                     size: 30,
                     color: Colors.white,
                   )),
               IconButton(
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const SettingsScreen())),
+                  onPressed: () {
+                    int oldActiveTab =
+                        Provider.of<Data>(context, listen: false).activeTab;
+                    Provider.of<Data>(context, listen: false).setActiveTab(5);
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(
+                            builder: (_) => const SettingsScreen()))
+                        .then((_) {
+                      Provider.of<Data>(context, listen: false)
+                          .setActiveTab(oldActiveTab);
+                    });
+                  },
                   icon: const Icon(Icons.menu, size: 32, color: Colors.white)),
             ],
           ),

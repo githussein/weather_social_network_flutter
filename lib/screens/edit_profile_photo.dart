@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -323,14 +325,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 try {
                                   var uri = Uri.parse(
                                       'https://admin.rain-app.com/api/update-profile');
-                                  var request =
-                                      http.MultipartRequest('POST', uri)
-                                        ..headers.addAll(
-                                            headers) //if u have headers, basic auth, token bearer... Else remove line
-                                        ..fields.addAll(requestBody)
-                                        ..files.add(picture);
-                                  var response = await request.send();
-                                  print('sendStatus: ${response.statusCode}');
+                                  var response = http.post(
+                                    uri,
+                                    headers: <String, String>{
+                                      'Content-Type':
+                                          'application/json; charset=UTF-8',
+                                      'Authorization': userToken!,
+                                    },
+                                    body: json.encode({
+                                      'name': nameController.text,
+                                      'email': emailController.text,
+                                      'country': countryController.text,
+                                      'phone': phoneController.text,
+                                    }),
+                                  );
+                                  // var response = await request.send();
+                                  // print('sendStatus: ${response.statusCode}');
+
                                   // String fileName = image!.path.split('/').last;
                                   // FormData formData = FormData.fromMap({
                                   //   'pic': await MultipartFile.fromFile(
@@ -423,8 +434,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 // Navigator.of(context, rootNavigator: true)
                                 //     .pushNamedAndRemoveUntil(
                                 //         '/', (Route<dynamic> route) => false);
-                                Navigator.of(context)
-                                    .pushNamed(BottomNavBar.routeName);
+                                Navigator.popUntil(
+                                    context, (route) => route.isFirst);
+                                // Navigator.of(context)
+                                //     .pushNamed(BottomNavBar.routeName);
                               } catch (error) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
