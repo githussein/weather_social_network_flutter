@@ -3,6 +3,7 @@ import 'package:matar_weather/screens/new_nav.dart';
 import 'package:provider/provider.dart';
 import 'screens/choose_country_screen.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'screens/bottom_nav_bar.dart';
 import 'providers/Auth.dart';
 import 'providers/posts.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         },
         home: const Directionality(
           textDirection: TextDirection.rtl,
-          child: BottomNavBar(),
+          child: KeyboardVisibilityProvider(child: BottomNavBar()),
         ),
       ),
     );
