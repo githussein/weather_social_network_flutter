@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         },
         home: const Directionality(
           textDirection: TextDirection.rtl,
-          child: KeyboardVisibilityProvider(child: BottomNavBar()),
+          child: BottomNavBar(),
         ),
       ),
     );
