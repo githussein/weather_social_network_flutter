@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 /// The authentication provider
 class Auth with ChangeNotifier {
@@ -71,7 +70,7 @@ class Auth with ChangeNotifier {
       {String phone = ''}) async {
     try {
       final response = await http.post(
-        Uri.parse('https://admin.rain-app.com/api/auth/signup'),
+        Uri.parse('https://app.app-backend.com/api/auth/signup'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -94,7 +93,7 @@ class Auth with ChangeNotifier {
   Future<int> signIn(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('https://admin.rain-app.com/api/auth/login'),
+        Uri.parse('https://appapp-backend.com/api/auth/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -122,7 +121,7 @@ class Auth with ChangeNotifier {
         userPic = userData.displayName ?? '';
       }).then((_) async {
         final response = await http.post(
-          Uri.parse('https://admin.rain-app.com/api/auth/social/google'),
+          Uri.parse('https://app.app-backend.com/api/auth/social/google'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -149,49 +148,34 @@ class Auth with ChangeNotifier {
   Future<int> signInWithFacebook() async {
     int statusCode = 0;
     try {
-      // final LoginResult result = await FacebookAuth.instance.login(
-      //     permissions: [
-      //       "email",
-      //       "public_profile",
-      //       "user_friends"
-      //     ]); // by default we request the email and the public profile
-// or FacebookAuth.i.login()
-//       if (result.status == LoginStatus.success) {
-//         // you are logged
-//         final AccessToken accessToken = result.accessToken!;
-//         print('Facebook: $AccessToken');
-//       } else {
-//         print('Facebook: ${result.status}');
-//         print(result.message);
-//       }
-      // FacebookAuth.instance
-      //     .login(permissions: ['public_profile', 'email'])
-      //     .then((value) => FacebookAuth.instance.getUserData())
-      //     .then((userData) {
-      //       print('userFacebook: $userData}');
-      //       username = userData['name'];
-      //       userEmail = userData['email'];
-      //       facebookToken = 'facebook_token';
-      //     })
-      //     .then((_) async {
-      //       final response = await http.post(
-      //         Uri.parse('https://admin.rain-app.com/api/auth/social/google'),
-      //         headers: <String, String>{
-      //           'Content-Type': 'application/json; charset=UTF-8',
-      //         },
-      //         body: json.encode({
-      //           'name': username,
-      //           'email': userEmail,
-      //           'google_token': googleToken,
-      //         }),
-      //       );
-      //
-      //       saveUserData(jsonDecode(response.body));
-      //       isSignedIn = true;
-      //
-      //       statusCode = 200;
-      //       notifyListeners();
-      //     });
+      FacebookAuth.instance
+          .login(permissions: ['public_profile', 'email'])
+          .then((value) => FacebookAuth.instance.getUserData())
+          .then((userData) {
+            print('userFacebook: $userData}');
+            username = userData['name'];
+            userEmail = userData['email'];
+            facebookToken = 'facebook_token';
+          })
+          .then((_) async {
+            final response = await http.post(
+              Uri.parse('https://app.app-backend.com/api/auth/social/google'),
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: json.encode({
+                'name': username,
+                'email': userEmail,
+                'google_token': googleToken,
+              }),
+            );
+
+            saveUserData(jsonDecode(response.body));
+            isSignedIn = true;
+
+            statusCode = 200;
+            notifyListeners();
+          });
       return statusCode;
     } catch (error) {
       print('problem signing in with Facebook.');

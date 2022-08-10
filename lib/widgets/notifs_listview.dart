@@ -10,7 +10,7 @@ class NotifsListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifs = Provider.of<Data>(context, listen: false).notifs;
 
-    print('https://admin.rain-app.com/storage/outlooks/${notifs[0].media}');
+    print('https://app.app-backend.com/storage/outlooks/${notifs[0].media}');
     return ListView.builder(
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
@@ -23,7 +23,7 @@ class NotifsListView extends StatelessWidget {
               height: 42,
               width: 42,
               imageUrl:
-                  'https://admin.rain-app.com/storage/notifications/${notifs[index].media}')),
+                  'https://app.app-backend.com/storage/notifications/${notifs[index].media}')),
     );
   }
 }

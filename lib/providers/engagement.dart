@@ -10,7 +10,7 @@ class Engagement with ChangeNotifier {
   Future<void> likePost(BuildContext ctx, int outlookId) async {
     try {
       await http.post(
-        Uri.parse('https://admin.rain-app.com/api/submit-like'),
+        Uri.parse('https://appapp-backend.com/api/submit-like'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': Provider.of<Auth>(ctx, listen: false).userToken,
@@ -28,7 +28,7 @@ class Engagement with ChangeNotifier {
   Future<void> comment(BuildContext ctx, int outlookId, String comment) async {
     try {
       await http.post(
-        Uri.parse('https://admin.rain-app.com/api/send-comment'),
+        Uri.parse('https://appapp-backend.com/api/send-comment'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': Provider.of<Auth>(ctx, listen: false).userToken,
@@ -46,7 +46,7 @@ class Engagement with ChangeNotifier {
   Future<void> sendTicket(String email, String content) async {
     try {
       final response = await http.post(
-        Uri.parse('https://admin.rain-app.com/api/send-ticket'),
+        Uri.parse('https://app.app-backend.com/api/send-ticket'),
         body: json.encode({'email': email, 'content': content}),
       );
 

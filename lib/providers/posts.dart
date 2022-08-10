@@ -13,7 +13,7 @@ class Posts with ChangeNotifier {
   List<Media> get media => [..._media]; //return a copy
 
   Future<void> getAllPosts() async {
-    var url = Uri.parse('https://admin.rain-app.com/api/outlooks');
+    var url = Uri.parse('https://app.app-backend.com/api/outlooks');
 
     try {
       final response = await http.get(url);
@@ -44,7 +44,7 @@ class Posts with ChangeNotifier {
   }
 
   Future<void> getAllMedia() async {
-    var url = Uri.parse('https://admin.rain-app.com/api/weatherShots');
+    var url = Uri.parse('https://app.app-backend.com/api/weatherShots');
 
     try {
       final response = await http.get(url);

@@ -77,7 +77,6 @@ class _MapScreenState extends State<MapScreen> {
               : WebView(
                   debuggingEnabled: true,
                   javascriptMode: JavascriptMode.unrestricted,
-                  // initialUrl: 'https://admin.rain-app.com/api/sattelite-link'),
                   initialUrl: mapUrl,
                 ),
           if (_isBannerAdReady)

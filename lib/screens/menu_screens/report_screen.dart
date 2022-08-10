@@ -69,7 +69,7 @@ class _ReportScreenState extends State<ReportScreen> {
                             try {
                               final response = await http.post(
                                 Uri.parse(
-                                    'https://admin.rain-app.com/api/send-ticket'),
+                                    'https://app.app-backend.com/api/send-ticket'),
                                 headers: <String, String>{
                                   'Content-Type':
                                       'application/json; charset=UTF-8',

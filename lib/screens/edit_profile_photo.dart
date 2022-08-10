@@ -324,7 +324,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 };
                                 try {
                                   var uri = Uri.parse(
-                                      'https://admin.rain-app.com/api/update-profile');
+                                      'https://app.app-backend.com/api/update-profile');
                                   var response = http.post(
                                     uri,
                                     headers: <String, String>{
@@ -339,28 +339,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       'phone': phoneController.text,
                                     }),
                                   );
-                                  // var response = await request.send();
-                                  // print('sendStatus: ${response.statusCode}');
-
-                                  // String fileName = image!.path.split('/').last;
-                                  // FormData formData = FormData.fromMap({
-                                  //   'pic': await MultipartFile.fromFile(
-                                  //       image!.path,
-                                  //       filename: fileName),
-                                  //   'name': nameController.text,
-                                  //   'email': emailController.text,
-                                  //   'country': countryController.text,
-                                  //   'phone': phoneController.text,
-                                  // });
-                                  // Response response = await dio.post(
-                                  //     'https://admin.rain-app.com/api/update-profile',
-                                  //     data: formData,
-                                  //     options: Options(
-                                  //       headers: <String, String>{
-                                  //         'Content-Type': 'multipart/form-data',
-                                  //         'Authorization': userToken!,
-                                  //       },
-                                  //     ));
                                 } catch (e) {
                                   rethrow;
                                 }

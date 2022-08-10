@@ -151,14 +151,14 @@ class _PredictionsScreenState extends State<PredictionsScreen> {
                                               .contains('.mp4')
                                           ? VideoTilePre(
                                               videoUrl:
-                                                  'https://admin.rain-app.com/storage/outlooks/${file['file']}',
+                                                  'https://app.app-backend.com/storage/outlooks/${file['file']}',
                                               currentIndex: index,
                                               snappedPage: _snappedPageIndex,
                                             )
                                           : CachedNetworkImage(
                                               fit: BoxFit.cover,
                                               imageUrl:
-                                                  'https://admin.rain-app.com/storage/outlooks/${file['file']}'),
+                                                  'https://app.app-backend.com/storage/outlooks/${file['file']}'),
                                     );
                                   },
                                 );

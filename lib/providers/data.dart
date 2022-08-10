@@ -19,7 +19,7 @@ class Data with ChangeNotifier {
   List<Notif> get notifs => [..._notifs]; //return a copy
 
   Future<void> getMapUrl() async {
-    var url = Uri.parse('https://admin.rain-app.com/api/sattelite-link');
+    var url = Uri.parse('https://app.app-backend.com/api/sattelite-link');
 
     try {
       final response = await http.get(url);
@@ -33,7 +33,7 @@ class Data with ChangeNotifier {
   }
 
   Future<void> getNotifications() async {
-    var url = Uri.parse('https://admin.rain-app.com/api/all-notifications');
+    var url = Uri.parse('https://app.app-backend.com/api/all-notifications');
 
     try {
       final response = await http.get(url);
