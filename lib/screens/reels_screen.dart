@@ -148,7 +148,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
   //     ..initialize().then((_) => _controller.play());
   //   await Future.delayed(const Duration(milliseconds: 3000));
   //
-  //   print('https://admin.rain-app.com/storage/weather-shots/$newUrl');
+  //   print('https://app.rain-app.com/storage/weather-shots/$newUrl');
   // }
 
   @override
@@ -162,25 +162,6 @@ class _ReelsScreenState extends State<ReelsScreen> {
         itemCount: mediaList.length,
         onPageChanged: (int page) => setState(() => _snappedPageIndex = page),
         itemBuilder: (context, index) {
-          // if (index == 1) {
-          //   print(index);
-          //   _loadInterstitialAd();
-          // }
-          //
-          // if (index == 3) {
-          //   print(index);
-          // _interstitialAd?.show();
-          // }
-          //
-
-          // init = false;
-          // if (mediaList[index].media.contains('.mp4')) {
-          //   init = false;
-          //   changeVideo(
-          //       'https://admin.rain-app.com/storage/weather-shots/${mediaList[index].media}');
-          // }
-          // if (mediaList[index].media.contains('.mp4')) {
-          // }
           return (index == 1 || (index > 2 && (index - 1) % 4 == 0))
               ? Column(
                   children: [
@@ -201,7 +182,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
                           ? Center(
                               child: VideoTile(
                                 videoUrl:
-                                    'https://admin.rain-app.com/storage/weather-shots/${mediaList[index].media}',
+                                    'https://app.app-backend.com/storage/weather-shots/${mediaList[index].media}',
                                 currentIndex: index,
                                 snappedPage: _snappedPageIndex,
                               ),
@@ -210,7 +191,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
                               child: CachedNetworkImage(
                                   fit: BoxFit.fitWidth,
                                   imageUrl:
-                                      'https://admin.rain-app.com/storage/weather-shots/${mediaList[index].media}'),
+                                      'https://app.app-backend.com/storage/weather-shots/${mediaList[index].media}'),
                             ),
                       Align(
                         alignment: Alignment.bottomRight,
@@ -279,78 +260,6 @@ class _ReelsScreenState extends State<ReelsScreen> {
                       )
                     ],
                   ));
-
-          // (index + 1) % 5 == 0
-          //   ?
-          //       // child:
-          //       // _isBannerAdReady
-          //       //     ? AdWidget(ad: _bannerAd)
-          //       //     : const CircularProgressIndicator()
-          //       // )
-          //
-          //   // Stack(
-          //   //   children: [
-          //   //     AdWidget(ad: nativeAd!),
-          //   //     Container(
-          //   //       margin: EdgeInsets.symmetric(vertical: 100),
-          //   //       // padding: EdgeInsets.symmetric(vertical: 60),
-          //   //       alignment: Alignment.topCenter,
-          //   //       color: Colors.transparent,
-          //   //       child: const Text('إعلان'),
-          //   //       // width: double.infinity,
-          //   //       // height: _bannerAd.size.height.toDouble(),
-          //   //     ),
-          //   //   ],
-          //   // )
-          //   : Center(
-          //       child: mediaList[index].media.contains('.mp4')
-          //           ? AspectRatio(
-          //               aspectRatio: _controller.value.aspectRatio,
-          //               child: VideoPlayer(_controller))
-          //           : CachedNetworkImage(
-          //               fit: BoxFit.cover,
-          //               imageUrl:
-          //                   'https://admin.rain-app.com/storage/weather-shots/${mediaList[index].media}'),
-          //     );
-
-          // decoration: BoxDecoration(
-          //     border: Border.all(color: Colors.black),
-          //     image: DecorationImage(
-          //       fit: BoxFit.cover,
-          //       image: NetworkImage(
-          //           'https://picsum.photos/id/${index + 1047}/800/1080'),
-          //     )),
-
-          // child: Center(
-          //           child: Stack(
-          //         children: [
-          //           mediaList[index].media.contains('.mp4')
-          //               ? VideoPlayer(videoController)
-          //               : CachedNetworkImage(
-          //                   fit: BoxFit.cover,
-          //                   imageUrl:
-          //                       'https://admin.rain-app.com/storage/weather-shots/${mediaList[index].media}'),
-          //           Container(
-          //             decoration: const BoxDecoration(
-          //               gradient: LinearGradient(
-          //                 colors: [Colors.transparent, Colors.black],
-          //                 begin: Alignment(0, -0.5),
-          //                 end: Alignment(0, -2),
-          //               ),
-          //             ),
-          //           ),
-          //           // if (_isBannerAdReady)
-          //           //   Align(
-          //           //     alignment: Alignment.topCenter,
-          //           //     child: SizedBox(
-          //           //       width: _bannerAd.size.width.toDouble(),
-          //           //       height: _bannerAd.size.height.toDouble(),
-          //           //       child: AdWidget(ad: _bannerAd),
-          //           //     ),
-          //           //   ),
-          //         ],
-          //       )),
-          //     );
         },
       ),
     );

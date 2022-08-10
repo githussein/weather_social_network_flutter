@@ -28,28 +28,6 @@ class Auth with ChangeNotifier {
   );
 
   Future<void> saveUserData(Map<String, dynamic> user) async {
-    // currentUser = User(
-    //   id: user['id'] ?? -1,
-    //   name: user['name'] ?? '',
-    //   email: user['email'] ?? '',
-    //   phone: user['phone'] ?? '',
-    //   country: user['country'] ?? '',
-    //   pic: user['pic'] ?? '',
-    //   token: user['token'] ?? '',
-    //   date: user['date'] ?? '',
-    // );
-
-    // currentUser.id = user['id'] ?? -1;
-    // currentUser.name = user['name'] ?? '';
-    // currentUser.email = user['email'] ?? '';
-    // currentUser.password = user['password'] ?? '';
-    // currentUser.country = user['country'] ?? '';
-    // currentUser.phone = user['phone'] ?? '';
-    // currentUser.facebookToken = user['facebook_token'] ?? '';
-    // currentUser.googleToken = user['google_token'] ?? '';
-
-    // print(
-    //     'UserInfo: \n${currentUser.id}\n${currentUser.name}\n${currentUser.email}\n${currentUser.password}\n${currentUser.country}\n${currentUser.token}\n${currentUser.date}\n${currentUser.phone}\n');
     userId = user['id'] ?? -1;
     username = user['name'] ?? '';
     userEmail = user['email'] ?? '';

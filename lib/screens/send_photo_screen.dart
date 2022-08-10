@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
@@ -125,7 +127,7 @@ class _SendPhotoScreen extends State<SendPhotoScreen> {
 
                           Map<String, String> headers = <String, String>{
                             'Content-type': 'multipart/form-data',
-                            'Authorization': "Bearer ${userToken!}",
+                            'Authorization': userToken!,
                           };
                           var picture;
                           String fileName = 'img';
@@ -136,62 +138,91 @@ class _SendPhotoScreen extends State<SendPhotoScreen> {
                           }
 
                           try {
-                            // var formData = FormData.fromMap({
-                            //   'user_id': 1,
+                            var formData = FormData.fromMap({
+                              'user_id': 1,
+                              'photographer': nameController.text,
+                              'location': locationController.text,
+                              'date': dateController.text,
+                              'media': await MultipartFile.fromFile(image!.path,
+                                  filename: fileName)
+                            });
+                            await dio
+                                .post(
+                                    'https://admin.rain-app.com/api/send-pending-shot',
+                                    data: formData,
+                                    options: Options(
+                                      headers: headers,
+                                      // followRedirects: false,
+                                      // validateStatus: (status) => true,
+                                    ))
+                                .then((response) {
+                              print(response.data);
+                              // if (response.statusCode == 500) {
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     SnackBar(
+                              //       backgroundColor: Colors.purple.shade700,
+                              //       content:
+                              //           const Text('Internal server error'),
+                              //     ),
+                              //   );
+                              // } else if (response.statusCode == 200) {
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     SnackBar(
+                              //       backgroundColor: Colors.green.shade500,
+                              //       content: const Text(
+                              //           'تم الإرسال بنجاح. شكرا لمشاركتك.'),
+                              //     ),
+                              //   );
+                              // }
+                            });
+
+                            // await uploadImage(image!);
+                            // final uri = Uri.parse(
+                            //     'https://admin.rain-app.com/api/send-pending-shot');
+                            // var request = http.MultipartRequest('POST', uri);
+                            // final httpImage = await http.MultipartFile.fromPath(
+                            //     'img', image!.path);
+                            // // String bytes =
+                            // //     base64Encode(image!.readAsBytesSync());
+                            // // final httpImage = http.MultipartFile.fromBytes(
+                            // //     'files.myimage', bytes,
+                            // //     contentType: MediaType.parse(mimeType),
+                            // //     filename: fileName);
+                            // request.files.add(httpImage);
+                            // request.headers.addAll(headers);
+                            // request.fields['media'] = 1;
+                            // request.fields.addAll({
+                            //   'user_id': '1',
                             //   'photographer': nameController.text,
                             //   'location': locationController.text,
-                            //   'date': dateController.text,
-                            //   'media': await MultipartFile.fromFile(image!.path,
-                            //       filename: fileName)
+                            //   'date': dateController.text
                             // });
-                            // await dio
-                            //     .post(
-                            //         'https://admin.rain-app.com/api/send-pending-shot',
-                            //         data: formData,
-                            //         options: Options(
-                            //           headers: headers,
-                            //           followRedirects: false,
-                            //           validateStatus: (status) => true,
-                            //         ))
-                            //     .then((response) {
-                            //   if (response.statusCode == 500) {
-                            //     ScaffoldMessenger.of(context).showSnackBar(
-                            //       SnackBar(
-                            //         backgroundColor: Colors.purple.shade700,
-                            //         content:
-                            //             const Text('Internal server error'),
-                            //       ),
-                            //     );
-                            //   } else if (response.statusCode == 200) {
-                            //     ScaffoldMessenger.of(context).showSnackBar(
-                            //       SnackBar(
-                            //         backgroundColor: Colors.green.shade500,
-                            //         content: const Text(
-                            //             'تم الإرسال بنجاح. شكرا لمشاركتك.'),
-                            //       ),
-                            //     );
-                            //   }
-                            // });
-
-                            await uploadImage(image!);
-                            // var request = http.MultipartRequest('POST', uri);
-                            // request.headers.addAll(
-                            //     headers); //if u have headers, basic auth, token bearer... Else remove line
-                            // request.fields['photographer'] = 'SAMY';
-                            // request.files.add(await http.MultipartFile.fromPath(
-                            //   'img',
-                            //   image!.path,
-                            //   contentType: MediaType('image', 'jpeg'),
-                            // ));
+                            // // var request = http.MultipartRequest('POST', uri);
+                            // // request.headers.addAll(
+                            // //     headers); //if u have headers, basic auth, token bearer... Else remove line
+                            // // request.fields['photographer'] = 'SAMY';
+                            // // request.files.add(await http.MultipartFile.fromPath(
+                            // //   'img',
+                            // //   image!.path,
+                            // //   contentType: MediaType('image', 'jpeg'),
+                            // // ));
                             // // ..files.add(picture);
-                            // request.send().then((response) =>
-                            //     print('sendStatus: ${response.statusCode}'));
+                            // print('headers: $headers');
+                            // request
+                            //     .send()
+                            //     .then((streamedResponse) =>
+                            //         http.Response.fromStream(streamedResponse))
+                            //     .then((response) {
+                            //   print('statusCode: ${response.statusCode}');
+                            //   print('statusBody: ${response.body}');
+                            // });
                           } catch (e) {
-                            print('sendStatus: $e');
+                            print('sendStatus error: $e');
                             if (!mounted) return;
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
                               backgroundColor: Colors.deepPurple,
-                              content: const Text('Internal server error'),
+                              content: Text('Internal server error'),
                             ));
                           }
                           setState(() => _isSending = false);

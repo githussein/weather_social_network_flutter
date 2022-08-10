@@ -4,16 +4,10 @@ Weather forcast and news app.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Used gradle version is 7.4
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-TODO 
-video plays automatically
+Hey fellow developer,
+sorry fir the spaghetti code.
+it was a very low budget compared to the job done
+with a lot of miscommunication.
+May Allah make it smooth for you :)
